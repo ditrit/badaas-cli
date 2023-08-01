@@ -22,3 +22,9 @@ go.work
 
 # vscode conf
 .vscode
+
+# binary output
+badaas-cli
+
+# test results
+cmd/gen/conditions/*_conditions.go
