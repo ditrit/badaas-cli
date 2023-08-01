@@ -1,11 +1,11 @@
-package cmd
+package gen
 
 import (
-	"log"
 	"os"
 	"path/filepath"
 	"testing"
 
+	"github.com/ditrit/badaas-cli/cmd/utils"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -159,34 +159,21 @@ func assertPanic(t *testing.T, functionShouldPanic func(), errorMessage string) 
 }
 
 func checkFilesExist(t *testing.T) {
-	checkFileExists(t, ".dockerignore")
-	checkFileExists(t, "Makefile")
-	checkFileExists(t, filepath.Join("badaas", "config", "badaas.yml"))
-	checkFileExists(t, filepath.Join("badaas", "docker", "api", "docker-compose.yml"))
-	checkFileExists(t, filepath.Join("badaas", "docker", "api", "Dockerfile"))
+	utils.CheckFileExists(t, ".dockerignore")
+	utils.CheckFileExists(t, "Makefile")
+	utils.CheckFileExists(t, filepath.Join("badaas", "config", "badaas.yml"))
+	utils.CheckFileExists(t, filepath.Join("badaas", "docker", "api", "docker-compose.yml"))
+	utils.CheckFileExists(t, filepath.Join("badaas", "docker", "api", "Dockerfile"))
 	checkDockerDBFilesExist(t)
 }
 
 func checkDockerDBFilesExist(t *testing.T) {
-	checkFileExists(t, filepath.Join("badaas", "docker", "db", "docker-compose.yml"))
-}
-
-func checkFileExists(t *testing.T, name string) {
-	if _, err := os.Stat(name); err != nil {
-		t.Error(err)
-	}
+	utils.CheckFileExists(t, filepath.Join("badaas", "docker", "db", "docker-compose.yml"))
 }
 
 func teardown() {
-	remove(".dockerignore")
-	remove("Makefile")
-	remove("file.txt")
-	remove("badaas")
-}
-
-func remove(name string) {
-	err := os.RemoveAll(name)
-	if err != nil {
-		log.Fatal(err)
-	}
+	utils.RemoveFile(".dockerignore")
+	utils.RemoveFile("Makefile")
+	utils.RemoveFile("file.txt")
+	utils.RemoveFile("badaas")
 }
