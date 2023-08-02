@@ -8,34 +8,34 @@ import (
 	"time"
 )
 
-func ComputerId(v orm.UUID) orm.WhereCondition[overridereferencesinverse.Computer] {
-	return orm.WhereCondition[overridereferencesinverse.Computer]{
-		Field: "ID",
-		Value: v,
+func ComputerId(operator orm.Operator[orm.UUID]) orm.WhereCondition[overridereferencesinverse.Computer] {
+	return orm.FieldCondition[overridereferencesinverse.Computer, orm.UUID]{
+		Field:    "ID",
+		Operator: operator,
 	}
 }
-func ComputerCreatedAt(v time.Time) orm.WhereCondition[overridereferencesinverse.Computer] {
-	return orm.WhereCondition[overridereferencesinverse.Computer]{
-		Field: "CreatedAt",
-		Value: v,
+func ComputerCreatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[overridereferencesinverse.Computer] {
+	return orm.FieldCondition[overridereferencesinverse.Computer, time.Time]{
+		Field:    "CreatedAt",
+		Operator: operator,
 	}
 }
-func ComputerUpdatedAt(v time.Time) orm.WhereCondition[overridereferencesinverse.Computer] {
-	return orm.WhereCondition[overridereferencesinverse.Computer]{
-		Field: "UpdatedAt",
-		Value: v,
+func ComputerUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[overridereferencesinverse.Computer] {
+	return orm.FieldCondition[overridereferencesinverse.Computer, time.Time]{
+		Field:    "UpdatedAt",
+		Operator: operator,
 	}
 }
-func ComputerDeletedAt(v gorm.DeletedAt) orm.WhereCondition[overridereferencesinverse.Computer] {
-	return orm.WhereCondition[overridereferencesinverse.Computer]{
-		Field: "DeletedAt",
-		Value: v,
+func ComputerDeletedAt(operator orm.Operator[gorm.DeletedAt]) orm.WhereCondition[overridereferencesinverse.Computer] {
+	return orm.FieldCondition[overridereferencesinverse.Computer, gorm.DeletedAt]{
+		Field:    "DeletedAt",
+		Operator: operator,
 	}
 }
-func ComputerName(v string) orm.WhereCondition[overridereferencesinverse.Computer] {
-	return orm.WhereCondition[overridereferencesinverse.Computer]{
-		Field: "Name",
-		Value: v,
+func ComputerName(operator orm.Operator[string]) orm.WhereCondition[overridereferencesinverse.Computer] {
+	return orm.FieldCondition[overridereferencesinverse.Computer, string]{
+		Field:    "Name",
+		Operator: operator,
 	}
 }
 func ComputerProcessor(conditions ...orm.Condition[overridereferencesinverse.Processor]) orm.Condition[overridereferencesinverse.Computer] {

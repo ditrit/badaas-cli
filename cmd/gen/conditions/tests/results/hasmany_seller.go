@@ -8,33 +8,33 @@ import (
 	"time"
 )
 
-func SellerId(v orm.UUID) orm.WhereCondition[hasmany.Seller] {
-	return orm.WhereCondition[hasmany.Seller]{
-		Field: "ID",
-		Value: v,
+func SellerId(operator orm.Operator[orm.UUID]) orm.WhereCondition[hasmany.Seller] {
+	return orm.FieldCondition[hasmany.Seller, orm.UUID]{
+		Field:    "ID",
+		Operator: operator,
 	}
 }
-func SellerCreatedAt(v time.Time) orm.WhereCondition[hasmany.Seller] {
-	return orm.WhereCondition[hasmany.Seller]{
-		Field: "CreatedAt",
-		Value: v,
+func SellerCreatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[hasmany.Seller] {
+	return orm.FieldCondition[hasmany.Seller, time.Time]{
+		Field:    "CreatedAt",
+		Operator: operator,
 	}
 }
-func SellerUpdatedAt(v time.Time) orm.WhereCondition[hasmany.Seller] {
-	return orm.WhereCondition[hasmany.Seller]{
-		Field: "UpdatedAt",
-		Value: v,
+func SellerUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[hasmany.Seller] {
+	return orm.FieldCondition[hasmany.Seller, time.Time]{
+		Field:    "UpdatedAt",
+		Operator: operator,
 	}
 }
-func SellerDeletedAt(v gorm.DeletedAt) orm.WhereCondition[hasmany.Seller] {
-	return orm.WhereCondition[hasmany.Seller]{
-		Field: "DeletedAt",
-		Value: v,
+func SellerDeletedAt(operator orm.Operator[gorm.DeletedAt]) orm.WhereCondition[hasmany.Seller] {
+	return orm.FieldCondition[hasmany.Seller, gorm.DeletedAt]{
+		Field:    "DeletedAt",
+		Operator: operator,
 	}
 }
-func SellerCompanyId(v orm.UUID) orm.WhereCondition[hasmany.Seller] {
-	return orm.WhereCondition[hasmany.Seller]{
-		Field: "CompanyID",
-		Value: v,
+func SellerCompanyId(operator orm.Operator[orm.UUID]) orm.WhereCondition[hasmany.Seller] {
+	return orm.FieldCondition[hasmany.Seller, orm.UUID]{
+		Field:    "CompanyID",
+		Operator: operator,
 	}
 }

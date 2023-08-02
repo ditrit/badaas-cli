@@ -8,27 +8,27 @@ import (
 	"time"
 )
 
-func UUIDModelId(v orm.UUID) orm.WhereCondition[uuidmodel.UUIDModel] {
-	return orm.WhereCondition[uuidmodel.UUIDModel]{
-		Field: "ID",
-		Value: v,
+func UUIDModelId(operator orm.Operator[orm.UUID]) orm.WhereCondition[uuidmodel.UUIDModel] {
+	return orm.FieldCondition[uuidmodel.UUIDModel, orm.UUID]{
+		Field:    "ID",
+		Operator: operator,
 	}
 }
-func UUIDModelCreatedAt(v time.Time) orm.WhereCondition[uuidmodel.UUIDModel] {
-	return orm.WhereCondition[uuidmodel.UUIDModel]{
-		Field: "CreatedAt",
-		Value: v,
+func UUIDModelCreatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[uuidmodel.UUIDModel] {
+	return orm.FieldCondition[uuidmodel.UUIDModel, time.Time]{
+		Field:    "CreatedAt",
+		Operator: operator,
 	}
 }
-func UUIDModelUpdatedAt(v time.Time) orm.WhereCondition[uuidmodel.UUIDModel] {
-	return orm.WhereCondition[uuidmodel.UUIDModel]{
-		Field: "UpdatedAt",
-		Value: v,
+func UUIDModelUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[uuidmodel.UUIDModel] {
+	return orm.FieldCondition[uuidmodel.UUIDModel, time.Time]{
+		Field:    "UpdatedAt",
+		Operator: operator,
 	}
 }
-func UUIDModelDeletedAt(v gorm.DeletedAt) orm.WhereCondition[uuidmodel.UUIDModel] {
-	return orm.WhereCondition[uuidmodel.UUIDModel]{
-		Field: "DeletedAt",
-		Value: v,
+func UUIDModelDeletedAt(operator orm.Operator[gorm.DeletedAt]) orm.WhereCondition[uuidmodel.UUIDModel] {
+	return orm.FieldCondition[uuidmodel.UUIDModel, gorm.DeletedAt]{
+		Field:    "DeletedAt",
+		Operator: operator,
 	}
 }

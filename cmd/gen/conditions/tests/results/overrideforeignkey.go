@@ -8,28 +8,28 @@ import (
 	"time"
 )
 
-func BicycleId(v orm.UUID) orm.WhereCondition[overrideforeignkey.Bicycle] {
-	return orm.WhereCondition[overrideforeignkey.Bicycle]{
-		Field: "ID",
-		Value: v,
+func BicycleId(operator orm.Operator[orm.UUID]) orm.WhereCondition[overrideforeignkey.Bicycle] {
+	return orm.FieldCondition[overrideforeignkey.Bicycle, orm.UUID]{
+		Field:    "ID",
+		Operator: operator,
 	}
 }
-func BicycleCreatedAt(v time.Time) orm.WhereCondition[overrideforeignkey.Bicycle] {
-	return orm.WhereCondition[overrideforeignkey.Bicycle]{
-		Field: "CreatedAt",
-		Value: v,
+func BicycleCreatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[overrideforeignkey.Bicycle] {
+	return orm.FieldCondition[overrideforeignkey.Bicycle, time.Time]{
+		Field:    "CreatedAt",
+		Operator: operator,
 	}
 }
-func BicycleUpdatedAt(v time.Time) orm.WhereCondition[overrideforeignkey.Bicycle] {
-	return orm.WhereCondition[overrideforeignkey.Bicycle]{
-		Field: "UpdatedAt",
-		Value: v,
+func BicycleUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[overrideforeignkey.Bicycle] {
+	return orm.FieldCondition[overrideforeignkey.Bicycle, time.Time]{
+		Field:    "UpdatedAt",
+		Operator: operator,
 	}
 }
-func BicycleDeletedAt(v gorm.DeletedAt) orm.WhereCondition[overrideforeignkey.Bicycle] {
-	return orm.WhereCondition[overrideforeignkey.Bicycle]{
-		Field: "DeletedAt",
-		Value: v,
+func BicycleDeletedAt(operator orm.Operator[gorm.DeletedAt]) orm.WhereCondition[overrideforeignkey.Bicycle] {
+	return orm.FieldCondition[overrideforeignkey.Bicycle, gorm.DeletedAt]{
+		Field:    "DeletedAt",
+		Operator: operator,
 	}
 }
 func BicycleOwner(conditions ...orm.Condition[overrideforeignkey.Person]) orm.Condition[overrideforeignkey.Bicycle] {
@@ -39,9 +39,9 @@ func BicycleOwner(conditions ...orm.Condition[overrideforeignkey.Person]) orm.Co
 		T2Field:    "ID",
 	}
 }
-func BicycleOwnerSomethingId(v string) orm.WhereCondition[overrideforeignkey.Bicycle] {
-	return orm.WhereCondition[overrideforeignkey.Bicycle]{
-		Field: "OwnerSomethingID",
-		Value: v,
+func BicycleOwnerSomethingId(operator orm.Operator[string]) orm.WhereCondition[overrideforeignkey.Bicycle] {
+	return orm.FieldCondition[overrideforeignkey.Bicycle, string]{
+		Field:    "OwnerSomethingID",
+		Operator: operator,
 	}
 }

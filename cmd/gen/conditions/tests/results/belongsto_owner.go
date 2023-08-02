@@ -8,27 +8,27 @@ import (
 	"time"
 )
 
-func OwnerId(v orm.UUID) orm.WhereCondition[belongsto.Owner] {
-	return orm.WhereCondition[belongsto.Owner]{
-		Field: "ID",
-		Value: v,
+func OwnerId(operator orm.Operator[orm.UUID]) orm.WhereCondition[belongsto.Owner] {
+	return orm.FieldCondition[belongsto.Owner, orm.UUID]{
+		Field:    "ID",
+		Operator: operator,
 	}
 }
-func OwnerCreatedAt(v time.Time) orm.WhereCondition[belongsto.Owner] {
-	return orm.WhereCondition[belongsto.Owner]{
-		Field: "CreatedAt",
-		Value: v,
+func OwnerCreatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[belongsto.Owner] {
+	return orm.FieldCondition[belongsto.Owner, time.Time]{
+		Field:    "CreatedAt",
+		Operator: operator,
 	}
 }
-func OwnerUpdatedAt(v time.Time) orm.WhereCondition[belongsto.Owner] {
-	return orm.WhereCondition[belongsto.Owner]{
-		Field: "UpdatedAt",
-		Value: v,
+func OwnerUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[belongsto.Owner] {
+	return orm.FieldCondition[belongsto.Owner, time.Time]{
+		Field:    "UpdatedAt",
+		Operator: operator,
 	}
 }
-func OwnerDeletedAt(v gorm.DeletedAt) orm.WhereCondition[belongsto.Owner] {
-	return orm.WhereCondition[belongsto.Owner]{
-		Field: "DeletedAt",
-		Value: v,
+func OwnerDeletedAt(operator orm.Operator[gorm.DeletedAt]) orm.WhereCondition[belongsto.Owner] {
+	return orm.FieldCondition[belongsto.Owner, gorm.DeletedAt]{
+		Field:    "DeletedAt",
+		Operator: operator,
 	}
 }

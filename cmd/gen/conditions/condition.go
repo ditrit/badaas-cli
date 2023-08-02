@@ -4,15 +4,19 @@ import (
 	"go/types"
 
 	"github.com/dave/jennifer/jen"
-	"github.com/ditrit/badaas-cli/cmd/log"
 	"github.com/ettle/strcase"
+
+	"github.com/ditrit/badaas-cli/cmd/log"
 )
 
 const (
 	// badaas/orm/condition.go
 	badaasORMCondition      = "Condition"
+	badaasORMFieldCondition = "FieldCondition"
 	badaasORMWhereCondition = "WhereCondition"
 	badaasORMJoinCondition  = "JoinCondition"
+	// badaas/orm/operator.go
+	badaasORMOperator = "Operator"
 )
 
 type Condition struct {
@@ -104,26 +108,7 @@ func (condition *Condition) generateForNamedType(objectType Type, field Field) {
 	_, err := field.Type.BadaasModelStruct()
 
 	if err == nil {
-		// field is a Badaas Model
-		hasFK, _ := objectType.HasFK(field)
-		if hasFK {
-			// belongsTo relation
-			condition.generateJoinWithFK(
-				objectType,
-				field,
-			)
-		} else {
-			// hasOne relation
-			condition.generateJoinWithoutFK(
-				objectType,
-				field,
-			)
-
-			condition.generateInverseJoin(
-				objectType,
-				field,
-			)
-		}
+		condition.generateForBadaasModel(objectType, field)
 	} else {
 		// field is not a Badaas Model
 		if field.Type.IsGormCustomType() || field.TypeString() == "time.Time" {
@@ -140,33 +125,66 @@ func (condition *Condition) generateForNamedType(objectType Type, field Field) {
 	}
 }
 
+// Generate condition between object and field when the field is a Badaas Model
+func (condition *Condition) generateForBadaasModel(objectType Type, field Field) {
+	hasFK, _ := objectType.HasFK(field)
+	if hasFK {
+		// belongsTo relation
+		condition.generateJoinWithFK(
+			objectType,
+			field,
+		)
+	} else {
+		// hasOne relation
+		condition.generateJoinWithoutFK(
+			objectType,
+			field,
+		)
+
+		condition.generateInverseJoin(
+			objectType,
+			field,
+		)
+	}
+}
+
 // Generate a WhereCondition between object and field
 func (condition *Condition) generateWhere(objectType Type, field Field) {
+	objectTypeQual := jen.Qual(
+		getRelativePackagePath(condition.destPkg, objectType),
+		objectType.Name(),
+	)
+
+	fieldCondition := jen.Qual(
+		badaasORMPath, badaasORMFieldCondition,
+	).Types(
+		objectTypeQual,
+		condition.param.GenericType(),
+	)
+
 	whereCondition := jen.Qual(
 		badaasORMPath, badaasORMWhereCondition,
 	).Types(
-		jen.Qual(
-			getRelativePackagePath(condition.destPkg, objectType),
-			objectType.Name(),
-		),
+		objectTypeQual,
 	)
 
 	conditionName := getConditionName(objectType, field)
 	log.Logger.Debugf("Generated %q", conditionName)
 
-	params := jen.Dict{
-		jen.Id("Value"): jen.Id("v"),
+	conditionValues := jen.Dict{
+		jen.Id("Operator"): jen.Id("operator"),
 	}
 	columnName := field.getColumnName()
+
 	if columnName != "" {
-		params[jen.Id("Column")] = jen.Lit(columnName)
+		conditionValues[jen.Id("Column")] = jen.Lit(columnName)
 	} else {
-		params[jen.Id("Field")] = jen.Lit(field.Name)
+		conditionValues[jen.Id("Field")] = jen.Lit(field.Name)
 	}
 
 	columnPrefix := field.ColumnPrefix
 	if columnPrefix != "" {
-		params[jen.Id("ColumnPrefix")] = jen.Lit(columnPrefix)
+		conditionValues[jen.Id("ColumnPrefix")] = jen.Lit(columnPrefix)
 	}
 
 	condition.codes = append(
@@ -176,10 +194,10 @@ func (condition *Condition) generateWhere(objectType Type, field Field) {
 		).Params(
 			condition.param.Statement(),
 		).Add(
-			whereCondition.Clone(),
+			whereCondition,
 		).Block(
 			jen.Return(
-				whereCondition.Clone().Values(params),
+				fieldCondition.Clone().Values(conditionValues),
 			),
 		),
 	)

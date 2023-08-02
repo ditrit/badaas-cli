@@ -8,33 +8,33 @@ import (
 	"time"
 )
 
-func CustomTypeId(v orm.UUID) orm.WhereCondition[customtype.CustomType] {
-	return orm.WhereCondition[customtype.CustomType]{
-		Field: "ID",
-		Value: v,
+func CustomTypeId(operator orm.Operator[orm.UUID]) orm.WhereCondition[customtype.CustomType] {
+	return orm.FieldCondition[customtype.CustomType, orm.UUID]{
+		Field:    "ID",
+		Operator: operator,
 	}
 }
-func CustomTypeCreatedAt(v time.Time) orm.WhereCondition[customtype.CustomType] {
-	return orm.WhereCondition[customtype.CustomType]{
-		Field: "CreatedAt",
-		Value: v,
+func CustomTypeCreatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[customtype.CustomType] {
+	return orm.FieldCondition[customtype.CustomType, time.Time]{
+		Field:    "CreatedAt",
+		Operator: operator,
 	}
 }
-func CustomTypeUpdatedAt(v time.Time) orm.WhereCondition[customtype.CustomType] {
-	return orm.WhereCondition[customtype.CustomType]{
-		Field: "UpdatedAt",
-		Value: v,
+func CustomTypeUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[customtype.CustomType] {
+	return orm.FieldCondition[customtype.CustomType, time.Time]{
+		Field:    "UpdatedAt",
+		Operator: operator,
 	}
 }
-func CustomTypeDeletedAt(v gorm.DeletedAt) orm.WhereCondition[customtype.CustomType] {
-	return orm.WhereCondition[customtype.CustomType]{
-		Field: "DeletedAt",
-		Value: v,
+func CustomTypeDeletedAt(operator orm.Operator[gorm.DeletedAt]) orm.WhereCondition[customtype.CustomType] {
+	return orm.FieldCondition[customtype.CustomType, gorm.DeletedAt]{
+		Field:    "DeletedAt",
+		Operator: operator,
 	}
 }
-func CustomTypeCustom(v customtype.MultiString) orm.WhereCondition[customtype.CustomType] {
-	return orm.WhereCondition[customtype.CustomType]{
-		Field: "Custom",
-		Value: v,
+func CustomTypeCustom(operator orm.Operator[customtype.MultiString]) orm.WhereCondition[customtype.CustomType] {
+	return orm.FieldCondition[customtype.CustomType, customtype.MultiString]{
+		Field:    "Custom",
+		Operator: operator,
 	}
 }
