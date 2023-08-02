@@ -84,3 +84,27 @@ func (param JenParam) ToCustomType(destPkg string, typeV Type) {
 		typeV.Name(),
 	)
 }
+
+func (param JenParam) SQLToBasicType(typeV Type) {
+	switch typeV.String() {
+	case nullString:
+		param.internalType.String()
+	case nullInt64:
+		param.internalType.Int64()
+	case nullInt32:
+		param.internalType.Int32()
+	case nullInt16:
+		param.internalType.Int16()
+	case nullByte:
+		param.internalType.Int8()
+	case nullFloat64:
+		param.internalType.Float64()
+	case nullBool:
+		param.internalType.Bool()
+	case nullTime, deletedAt:
+		param.internalType.Qual(
+			"time",
+			"Time",
+		)
+	}
+}

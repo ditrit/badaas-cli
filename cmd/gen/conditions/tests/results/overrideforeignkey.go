@@ -4,7 +4,6 @@ package conditions
 import (
 	overrideforeignkey "github.com/ditrit/badaas-cli/cmd/gen/conditions/tests/overrideforeignkey"
 	orm "github.com/ditrit/badaas/orm"
-	gorm "gorm.io/gorm"
 	"time"
 )
 
@@ -26,8 +25,8 @@ func BicycleUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[overr
 		Operator: operator,
 	}
 }
-func BicycleDeletedAt(operator orm.Operator[gorm.DeletedAt]) orm.WhereCondition[overrideforeignkey.Bicycle] {
-	return orm.FieldCondition[overrideforeignkey.Bicycle, gorm.DeletedAt]{
+func BicycleDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[overrideforeignkey.Bicycle] {
+	return orm.FieldCondition[overrideforeignkey.Bicycle, time.Time]{
 		Field:    "DeletedAt",
 		Operator: operator,
 	}

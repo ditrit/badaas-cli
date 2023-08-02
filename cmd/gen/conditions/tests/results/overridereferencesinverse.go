@@ -4,7 +4,6 @@ package conditions
 import (
 	overridereferencesinverse "github.com/ditrit/badaas-cli/cmd/gen/conditions/tests/overridereferencesinverse"
 	orm "github.com/ditrit/badaas/orm"
-	gorm "gorm.io/gorm"
 	"time"
 )
 
@@ -26,8 +25,8 @@ func ComputerUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[over
 		Operator: operator,
 	}
 }
-func ComputerDeletedAt(operator orm.Operator[gorm.DeletedAt]) orm.WhereCondition[overridereferencesinverse.Computer] {
-	return orm.FieldCondition[overridereferencesinverse.Computer, gorm.DeletedAt]{
+func ComputerDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[overridereferencesinverse.Computer] {
+	return orm.FieldCondition[overridereferencesinverse.Computer, time.Time]{
 		Field:    "DeletedAt",
 		Operator: operator,
 	}

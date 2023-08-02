@@ -4,7 +4,6 @@ package conditions
 import (
 	gormembedded "github.com/ditrit/badaas-cli/cmd/gen/conditions/tests/gormembedded"
 	orm "github.com/ditrit/badaas/orm"
-	gorm "gorm.io/gorm"
 	"time"
 )
 
@@ -26,8 +25,8 @@ func GormEmbeddedUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[
 		Operator: operator,
 	}
 }
-func GormEmbeddedDeletedAt(operator orm.Operator[gorm.DeletedAt]) orm.WhereCondition[gormembedded.GormEmbedded] {
-	return orm.FieldCondition[gormembedded.GormEmbedded, gorm.DeletedAt]{
+func GormEmbeddedDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[gormembedded.GormEmbedded] {
+	return orm.FieldCondition[gormembedded.GormEmbedded, time.Time]{
 		Field:    "DeletedAt",
 		Operator: operator,
 	}

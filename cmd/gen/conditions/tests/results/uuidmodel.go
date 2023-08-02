@@ -4,7 +4,6 @@ package conditions
 import (
 	uuidmodel "github.com/ditrit/badaas-cli/cmd/gen/conditions/tests/uuidmodel"
 	orm "github.com/ditrit/badaas/orm"
-	gorm "gorm.io/gorm"
 	"time"
 )
 
@@ -26,8 +25,8 @@ func UUIDModelUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[uui
 		Operator: operator,
 	}
 }
-func UUIDModelDeletedAt(operator orm.Operator[gorm.DeletedAt]) orm.WhereCondition[uuidmodel.UUIDModel] {
-	return orm.FieldCondition[uuidmodel.UUIDModel, gorm.DeletedAt]{
+func UUIDModelDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[uuidmodel.UUIDModel] {
+	return orm.FieldCondition[uuidmodel.UUIDModel, time.Time]{
 		Field:    "DeletedAt",
 		Operator: operator,
 	}

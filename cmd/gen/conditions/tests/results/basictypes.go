@@ -4,7 +4,6 @@ package conditions
 import (
 	basictypes "github.com/ditrit/badaas-cli/cmd/gen/conditions/tests/basictypes"
 	orm "github.com/ditrit/badaas/orm"
-	gorm "gorm.io/gorm"
 	"time"
 )
 
@@ -26,8 +25,8 @@ func BasicTypesUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[ba
 		Operator: operator,
 	}
 }
-func BasicTypesDeletedAt(operator orm.Operator[gorm.DeletedAt]) orm.WhereCondition[basictypes.BasicTypes] {
-	return orm.FieldCondition[basictypes.BasicTypes, gorm.DeletedAt]{
+func BasicTypesDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[basictypes.BasicTypes] {
+	return orm.FieldCondition[basictypes.BasicTypes, time.Time]{
 		Field:    "DeletedAt",
 		Operator: operator,
 	}

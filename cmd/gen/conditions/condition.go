@@ -108,20 +108,25 @@ func (condition *Condition) generateForNamedType(objectType Type, field Field) {
 	_, err := field.Type.BadaasModelStruct()
 
 	if err == nil {
+		// field is a badaas model
 		condition.generateForBadaasModel(objectType, field)
+	} else if field.Type.IsSQLNullableType() {
+		// field is a sql nullable type (sql.NullBool, sql.NullInt, etc.)
+		condition.param.SQLToBasicType(field.Type)
+		condition.generateWhere(
+			objectType,
+			field,
+		)
+	} else if field.Type.IsGormCustomType() || field.TypeString() == "time.Time" {
+		// field is a Gorm Custom type (implements Scanner and Valuer interfaces)
+		// or a named type supported by gorm (time.Time)
+		condition.param.ToCustomType(condition.destPkg, field.Type)
+		condition.generateWhere(
+			objectType,
+			field,
+		)
 	} else {
-		// field is not a Badaas Model
-		if field.Type.IsGormCustomType() || field.TypeString() == "time.Time" {
-			// field is a Gorm Custom type (implements Scanner and Valuer interfaces)
-			// or a named type supported by gorm (time.Time, gorm.DeletedAt)
-			condition.param.ToCustomType(condition.destPkg, field.Type)
-			condition.generateWhere(
-				objectType,
-				field,
-			)
-		} else {
-			log.Logger.Debugf("struct field type not handled: %s", field.TypeString())
-		}
+		log.Logger.Debugf("struct field type not handled: %s", field.TypeString())
 	}
 }
 

@@ -4,7 +4,6 @@ package conditions
 import (
 	columndefinition "github.com/ditrit/badaas-cli/cmd/gen/conditions/tests/columndefinition"
 	orm "github.com/ditrit/badaas/orm"
-	gorm "gorm.io/gorm"
 	"time"
 )
 
@@ -26,8 +25,8 @@ func ColumnDefinitionUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondit
 		Operator: operator,
 	}
 }
-func ColumnDefinitionDeletedAt(operator orm.Operator[gorm.DeletedAt]) orm.WhereCondition[columndefinition.ColumnDefinition] {
-	return orm.FieldCondition[columndefinition.ColumnDefinition, gorm.DeletedAt]{
+func ColumnDefinitionDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[columndefinition.ColumnDefinition] {
+	return orm.FieldCondition[columndefinition.ColumnDefinition, time.Time]{
 		Field:    "DeletedAt",
 		Operator: operator,
 	}

@@ -4,7 +4,6 @@ package conditions
 import (
 	customtype "github.com/ditrit/badaas-cli/cmd/gen/conditions/tests/customtype"
 	orm "github.com/ditrit/badaas/orm"
-	gorm "gorm.io/gorm"
 	"time"
 )
 
@@ -26,8 +25,8 @@ func CustomTypeUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[cu
 		Operator: operator,
 	}
 }
-func CustomTypeDeletedAt(operator orm.Operator[gorm.DeletedAt]) orm.WhereCondition[customtype.CustomType] {
-	return orm.FieldCondition[customtype.CustomType, gorm.DeletedAt]{
+func CustomTypeDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[customtype.CustomType] {
+	return orm.FieldCondition[customtype.CustomType, time.Time]{
 		Field:    "DeletedAt",
 		Operator: operator,
 	}

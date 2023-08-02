@@ -4,7 +4,6 @@ package conditions
 import (
 	hasone "github.com/ditrit/badaas-cli/cmd/gen/conditions/tests/hasone"
 	orm "github.com/ditrit/badaas/orm"
-	gorm "gorm.io/gorm"
 	"time"
 )
 
@@ -26,8 +25,8 @@ func CountryUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[hason
 		Operator: operator,
 	}
 }
-func CountryDeletedAt(operator orm.Operator[gorm.DeletedAt]) orm.WhereCondition[hasone.Country] {
-	return orm.FieldCondition[hasone.Country, gorm.DeletedAt]{
+func CountryDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[hasone.Country] {
+	return orm.FieldCondition[hasone.Country, time.Time]{
 		Field:    "DeletedAt",
 		Operator: operator,
 	}

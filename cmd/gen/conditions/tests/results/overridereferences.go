@@ -4,7 +4,6 @@ package conditions
 import (
 	overridereferences "github.com/ditrit/badaas-cli/cmd/gen/conditions/tests/overridereferences"
 	orm "github.com/ditrit/badaas/orm"
-	gorm "gorm.io/gorm"
 	"time"
 )
 
@@ -26,8 +25,8 @@ func PhoneUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[overrid
 		Operator: operator,
 	}
 }
-func PhoneDeletedAt(operator orm.Operator[gorm.DeletedAt]) orm.WhereCondition[overridereferences.Phone] {
-	return orm.FieldCondition[overridereferences.Phone, gorm.DeletedAt]{
+func PhoneDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[overridereferences.Phone] {
+	return orm.FieldCondition[overridereferences.Phone, time.Time]{
 		Field:    "DeletedAt",
 		Operator: operator,
 	}

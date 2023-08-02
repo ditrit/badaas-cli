@@ -4,7 +4,6 @@ package conditions
 import (
 	belongsto "github.com/ditrit/badaas-cli/cmd/gen/conditions/tests/belongsto"
 	orm "github.com/ditrit/badaas/orm"
-	gorm "gorm.io/gorm"
 	"time"
 )
 
@@ -26,8 +25,8 @@ func OwnedUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[belongs
 		Operator: operator,
 	}
 }
-func OwnedDeletedAt(operator orm.Operator[gorm.DeletedAt]) orm.WhereCondition[belongsto.Owned] {
-	return orm.FieldCondition[belongsto.Owned, gorm.DeletedAt]{
+func OwnedDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[belongsto.Owned] {
+	return orm.FieldCondition[belongsto.Owned, time.Time]{
 		Field:    "DeletedAt",
 		Operator: operator,
 	}

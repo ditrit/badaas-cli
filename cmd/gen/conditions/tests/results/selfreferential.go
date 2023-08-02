@@ -4,7 +4,6 @@ package conditions
 import (
 	selfreferential "github.com/ditrit/badaas-cli/cmd/gen/conditions/tests/selfreferential"
 	orm "github.com/ditrit/badaas/orm"
-	gorm "gorm.io/gorm"
 	"time"
 )
 
@@ -26,8 +25,8 @@ func EmployeeUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[self
 		Operator: operator,
 	}
 }
-func EmployeeDeletedAt(operator orm.Operator[gorm.DeletedAt]) orm.WhereCondition[selfreferential.Employee] {
-	return orm.FieldCondition[selfreferential.Employee, gorm.DeletedAt]{
+func EmployeeDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[selfreferential.Employee] {
+	return orm.FieldCondition[selfreferential.Employee, time.Time]{
 		Field:    "DeletedAt",
 		Operator: operator,
 	}

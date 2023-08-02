@@ -4,7 +4,6 @@ package conditions
 import (
 	basicslicespointer "github.com/ditrit/badaas-cli/cmd/gen/conditions/tests/basicslicespointer"
 	orm "github.com/ditrit/badaas/orm"
-	gorm "gorm.io/gorm"
 	"time"
 )
 
@@ -26,8 +25,8 @@ func BasicSlicesPointerUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCond
 		Operator: operator,
 	}
 }
-func BasicSlicesPointerDeletedAt(operator orm.Operator[gorm.DeletedAt]) orm.WhereCondition[basicslicespointer.BasicSlicesPointer] {
-	return orm.FieldCondition[basicslicespointer.BasicSlicesPointer, gorm.DeletedAt]{
+func BasicSlicesPointerDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[basicslicespointer.BasicSlicesPointer] {
+	return orm.FieldCondition[basicslicespointer.BasicSlicesPointer, time.Time]{
 		Field:    "DeletedAt",
 		Operator: operator,
 	}

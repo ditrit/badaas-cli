@@ -4,7 +4,6 @@ package conditions
 import (
 	hasone "github.com/ditrit/badaas-cli/cmd/gen/conditions/tests/hasone"
 	orm "github.com/ditrit/badaas/orm"
-	gorm "gorm.io/gorm"
 	"time"
 )
 
@@ -26,8 +25,8 @@ func CityUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[hasone.C
 		Operator: operator,
 	}
 }
-func CityDeletedAt(operator orm.Operator[gorm.DeletedAt]) orm.WhereCondition[hasone.City] {
-	return orm.FieldCondition[hasone.City, gorm.DeletedAt]{
+func CityDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[hasone.City] {
+	return orm.FieldCondition[hasone.City, time.Time]{
 		Field:    "DeletedAt",
 		Operator: operator,
 	}

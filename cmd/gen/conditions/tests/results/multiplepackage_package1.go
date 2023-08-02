@@ -5,7 +5,6 @@ import (
 	package1 "github.com/ditrit/badaas-cli/cmd/gen/conditions/tests/multiplepackage/package1"
 	package2 "github.com/ditrit/badaas-cli/cmd/gen/conditions/tests/multiplepackage/package2"
 	orm "github.com/ditrit/badaas/orm"
-	gorm "gorm.io/gorm"
 	"time"
 )
 
@@ -27,8 +26,8 @@ func Package1UpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[pack
 		Operator: operator,
 	}
 }
-func Package1DeletedAt(operator orm.Operator[gorm.DeletedAt]) orm.WhereCondition[package1.Package1] {
-	return orm.FieldCondition[package1.Package1, gorm.DeletedAt]{
+func Package1DeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[package1.Package1] {
+	return orm.FieldCondition[package1.Package1, time.Time]{
 		Field:    "DeletedAt",
 		Operator: operator,
 	}

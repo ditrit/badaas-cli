@@ -4,7 +4,6 @@ package conditions
 import (
 	overrideforeignkeyinverse "github.com/ditrit/badaas-cli/cmd/gen/conditions/tests/overrideforeignkeyinverse"
 	orm "github.com/ditrit/badaas/orm"
-	gorm "gorm.io/gorm"
 	"time"
 )
 
@@ -26,8 +25,8 @@ func UserUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[override
 		Operator: operator,
 	}
 }
-func UserDeletedAt(operator orm.Operator[gorm.DeletedAt]) orm.WhereCondition[overrideforeignkeyinverse.User] {
-	return orm.FieldCondition[overrideforeignkeyinverse.User, gorm.DeletedAt]{
+func UserDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[overrideforeignkeyinverse.User] {
+	return orm.FieldCondition[overrideforeignkeyinverse.User, time.Time]{
 		Field:    "DeletedAt",
 		Operator: operator,
 	}

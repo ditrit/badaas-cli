@@ -4,7 +4,6 @@ package conditions
 import (
 	basicpointers "github.com/ditrit/badaas-cli/cmd/gen/conditions/tests/basicpointers"
 	orm "github.com/ditrit/badaas/orm"
-	gorm "gorm.io/gorm"
 	"time"
 )
 
@@ -26,8 +25,8 @@ func BasicPointersUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition
 		Operator: operator,
 	}
 }
-func BasicPointersDeletedAt(operator orm.Operator[gorm.DeletedAt]) orm.WhereCondition[basicpointers.BasicPointers] {
-	return orm.FieldCondition[basicpointers.BasicPointers, gorm.DeletedAt]{
+func BasicPointersDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[basicpointers.BasicPointers] {
+	return orm.FieldCondition[basicpointers.BasicPointers, time.Time]{
 		Field:    "DeletedAt",
 		Operator: operator,
 	}

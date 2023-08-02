@@ -4,7 +4,6 @@ package conditions
 import (
 	basicslices "github.com/ditrit/badaas-cli/cmd/gen/conditions/tests/basicslices"
 	orm "github.com/ditrit/badaas/orm"
-	gorm "gorm.io/gorm"
 	"time"
 )
 
@@ -26,8 +25,8 @@ func BasicSlicesUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[b
 		Operator: operator,
 	}
 }
-func BasicSlicesDeletedAt(operator orm.Operator[gorm.DeletedAt]) orm.WhereCondition[basicslices.BasicSlices] {
-	return orm.FieldCondition[basicslices.BasicSlices, gorm.DeletedAt]{
+func BasicSlicesDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[basicslices.BasicSlices] {
+	return orm.FieldCondition[basicslices.BasicSlices, time.Time]{
 		Field:    "DeletedAt",
 		Operator: operator,
 	}

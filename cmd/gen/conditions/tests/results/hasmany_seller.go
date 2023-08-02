@@ -4,7 +4,6 @@ package conditions
 import (
 	hasmany "github.com/ditrit/badaas-cli/cmd/gen/conditions/tests/hasmany"
 	orm "github.com/ditrit/badaas/orm"
-	gorm "gorm.io/gorm"
 	"time"
 )
 
@@ -26,8 +25,8 @@ func SellerUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[hasman
 		Operator: operator,
 	}
 }
-func SellerDeletedAt(operator orm.Operator[gorm.DeletedAt]) orm.WhereCondition[hasmany.Seller] {
-	return orm.FieldCondition[hasmany.Seller, gorm.DeletedAt]{
+func SellerDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[hasmany.Seller] {
+	return orm.FieldCondition[hasmany.Seller, time.Time]{
 		Field:    "DeletedAt",
 		Operator: operator,
 	}
