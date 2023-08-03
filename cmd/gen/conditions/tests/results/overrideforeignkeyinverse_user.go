@@ -31,12 +31,13 @@ func UserDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[override
 		Operator:        operator,
 	}
 }
-func UserCreditCard(conditions ...orm.Condition[overrideforeignkeyinverse.CreditCard]) orm.Condition[overrideforeignkeyinverse.User] {
+func UserCreditCard(conditions ...orm.Condition[overrideforeignkeyinverse.CreditCard]) orm.IJoinCondition[overrideforeignkeyinverse.User] {
 	return orm.JoinCondition[overrideforeignkeyinverse.User, overrideforeignkeyinverse.CreditCard]{
-		Conditions:    conditions,
-		RelationField: "CreditCard",
-		T1Field:       "ID",
-		T2Field:       "UserReference",
+		Conditions:         conditions,
+		RelationField:      "CreditCard",
+		T1Field:            "ID",
+		T1PreloadCondition: UserPreloadAttributes,
+		T2Field:            "UserReference",
 	}
 }
 

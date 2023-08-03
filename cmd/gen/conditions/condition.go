@@ -15,6 +15,7 @@ const (
 	badaasORMFieldCondition  = "FieldCondition"
 	badaasORMWhereCondition  = "WhereCondition"
 	badaasORMJoinCondition   = "JoinCondition"
+	badaasORMIJoinCondition  = "IJoinCondition"
 	badaasORMFieldIdentifier = "FieldIdentifier"
 	IDFieldID                = "IDFieldID"
 	CreatedAtFieldID         = "CreatedAtFieldID"
@@ -278,8 +279,8 @@ func (condition *Condition) generateJoin(objectType Type, field Field, t1Field, 
 	conditionName := getConditionName(objectType, field)
 	log.Logger.Debugf("Generated %q", conditionName)
 
-	ormT1Condition := jen.Qual(
-		badaasORMPath, badaasORMCondition,
+	ormT1IJoinCondition := jen.Qual(
+		badaasORMPath, badaasORMIJoinCondition,
 	).Types(t1)
 	ormT2Condition := jen.Qual(
 		badaasORMPath, badaasORMCondition,
@@ -297,14 +298,15 @@ func (condition *Condition) generateJoin(objectType Type, field Field, t1Field, 
 		).Params(
 			jen.Id("conditions").Op("...").Add(ormT2Condition),
 		).Add(
-			ormT1Condition,
+			ormT1IJoinCondition,
 		).Block(
 			jen.Return(
 				ormJoinCondition.Values(jen.Dict{
-					jen.Id("T1Field"):       jen.Lit(t1Field),
-					jen.Id("T2Field"):       jen.Lit(t2Field),
-					jen.Id("RelationField"): jen.Lit(field.Name),
-					jen.Id("Conditions"):    jen.Id("conditions"),
+					jen.Id("T1Field"):            jen.Lit(t1Field),
+					jen.Id("T2Field"):            jen.Lit(t2Field),
+					jen.Id("RelationField"):      jen.Lit(field.Name),
+					jen.Id("Conditions"):         jen.Id("conditions"),
+					jen.Id("T1PreloadCondition"): jen.Id(getPreloadAttributesName(objectType.Name())),
 				}),
 			),
 		),

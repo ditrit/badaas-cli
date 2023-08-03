@@ -31,12 +31,13 @@ func OwnedDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[belongs
 		Operator:        operator,
 	}
 }
-func OwnedOwner(conditions ...orm.Condition[belongsto.Owner]) orm.Condition[belongsto.Owned] {
+func OwnedOwner(conditions ...orm.Condition[belongsto.Owner]) orm.IJoinCondition[belongsto.Owned] {
 	return orm.JoinCondition[belongsto.Owned, belongsto.Owner]{
-		Conditions:    conditions,
-		RelationField: "Owner",
-		T1Field:       "OwnerID",
-		T2Field:       "ID",
+		Conditions:         conditions,
+		RelationField:      "Owner",
+		T1Field:            "OwnerID",
+		T1PreloadCondition: OwnedPreloadAttributes,
+		T2Field:            "ID",
 	}
 }
 

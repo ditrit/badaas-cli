@@ -31,12 +31,13 @@ func CountryDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[hason
 		Operator:        operator,
 	}
 }
-func CountryCapital(conditions ...orm.Condition[hasone.City]) orm.Condition[hasone.Country] {
+func CountryCapital(conditions ...orm.Condition[hasone.City]) orm.IJoinCondition[hasone.Country] {
 	return orm.JoinCondition[hasone.Country, hasone.City]{
-		Conditions:    conditions,
-		RelationField: "Capital",
-		T1Field:       "ID",
-		T2Field:       "CountryID",
+		Conditions:         conditions,
+		RelationField:      "Capital",
+		T1Field:            "ID",
+		T1PreloadCondition: CountryPreloadAttributes,
+		T2Field:            "CountryID",
 	}
 }
 

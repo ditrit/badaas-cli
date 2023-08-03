@@ -31,12 +31,13 @@ func BicycleDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[overr
 		Operator:        operator,
 	}
 }
-func BicycleOwner(conditions ...orm.Condition[overrideforeignkey.Person]) orm.Condition[overrideforeignkey.Bicycle] {
+func BicycleOwner(conditions ...orm.Condition[overrideforeignkey.Person]) orm.IJoinCondition[overrideforeignkey.Bicycle] {
 	return orm.JoinCondition[overrideforeignkey.Bicycle, overrideforeignkey.Person]{
-		Conditions:    conditions,
-		RelationField: "Owner",
-		T1Field:       "OwnerSomethingID",
-		T2Field:       "ID",
+		Conditions:         conditions,
+		RelationField:      "Owner",
+		T1Field:            "OwnerSomethingID",
+		T1PreloadCondition: BicyclePreloadAttributes,
+		T2Field:            "ID",
 	}
 }
 

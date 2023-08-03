@@ -31,12 +31,13 @@ func EmployeeDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[self
 		Operator:        operator,
 	}
 }
-func EmployeeBoss(conditions ...orm.Condition[selfreferential.Employee]) orm.Condition[selfreferential.Employee] {
+func EmployeeBoss(conditions ...orm.Condition[selfreferential.Employee]) orm.IJoinCondition[selfreferential.Employee] {
 	return orm.JoinCondition[selfreferential.Employee, selfreferential.Employee]{
-		Conditions:    conditions,
-		RelationField: "Boss",
-		T1Field:       "BossID",
-		T2Field:       "ID",
+		Conditions:         conditions,
+		RelationField:      "Boss",
+		T1Field:            "BossID",
+		T1PreloadCondition: EmployeePreloadAttributes,
+		T2Field:            "ID",
 	}
 }
 

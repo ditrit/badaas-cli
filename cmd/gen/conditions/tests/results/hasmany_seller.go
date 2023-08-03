@@ -31,12 +31,13 @@ func SellerDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[hasman
 		Operator:        operator,
 	}
 }
-func SellerCompany(conditions ...orm.Condition[hasmany.Company]) orm.Condition[hasmany.Seller] {
+func SellerCompany(conditions ...orm.Condition[hasmany.Company]) orm.IJoinCondition[hasmany.Seller] {
 	return orm.JoinCondition[hasmany.Seller, hasmany.Company]{
-		Conditions:    conditions,
-		RelationField: "Company",
-		T1Field:       "CompanyID",
-		T2Field:       "ID",
+		Conditions:         conditions,
+		RelationField:      "Company",
+		T1Field:            "CompanyID",
+		T1PreloadCondition: SellerPreloadAttributes,
+		T2Field:            "ID",
 	}
 }
 

@@ -31,12 +31,13 @@ func PhoneDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[overrid
 		Operator:        operator,
 	}
 }
-func PhoneBrand(conditions ...orm.Condition[overridereferences.Brand]) orm.Condition[overridereferences.Phone] {
+func PhoneBrand(conditions ...orm.Condition[overridereferences.Brand]) orm.IJoinCondition[overridereferences.Phone] {
 	return orm.JoinCondition[overridereferences.Phone, overridereferences.Brand]{
-		Conditions:    conditions,
-		RelationField: "Brand",
-		T1Field:       "BrandName",
-		T2Field:       "Name",
+		Conditions:         conditions,
+		RelationField:      "Brand",
+		T1Field:            "BrandName",
+		T1PreloadCondition: PhonePreloadAttributes,
+		T2Field:            "Name",
 	}
 }
 
