@@ -9,11 +9,10 @@ import (
 	"github.com/ettle/strcase"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"golang.org/x/tools/go/packages"
 
 	"github.com/ditrit/badaas-cli/cmd/log"
 	"github.com/ditrit/verdeter"
-
-	"golang.org/x/tools/go/packages"
 )
 
 var GenConditionsCmd = verdeter.BuildVerdeterCommand(verdeter.VerdeterConfig{
@@ -24,7 +23,10 @@ var GenConditionsCmd = verdeter.BuildVerdeterCommand(verdeter.VerdeterConfig{
 	Args:  cobra.MinimumNArgs(1),
 })
 
-const DestPackageKey = "dest_package"
+const (
+	DestPackageKey = "dest_package"
+	badaasORMPath  = "github.com/ditrit/badaas/orm"
+)
 
 func init() {
 	err := GenConditionsCmd.LKey(
@@ -64,22 +66,26 @@ func generateConditionsForPkg(destPkg string, pkg *packages.Package) {
 	for _, name := range pkg.Types.Scope().Names() {
 		object := getObject(pkg, name)
 		if object != nil {
-			file := NewConditionsFile(
-				destPkg,
-				strcase.ToSnake(object.Name())+"_conditions.go",
-			)
-
-			err := file.AddConditionsFor(object)
-			if err != nil {
-				// object is not a Badaas model, do not generate conditions
-				continue
-			}
-
-			err = file.Save()
-			if err != nil {
-				panic(err)
-			}
+			generateConditionsForObject(destPkg, object)
 		}
+	}
+}
+
+func generateConditionsForObject(destPkg string, object types.Object) {
+	file := NewFile(
+		destPkg,
+		strcase.ToSnake(object.Name())+"_conditions.go",
+	)
+
+	err := NewConditionsGenerator(object).Into(file)
+	if err != nil {
+		// object is not a Badaas model, do not generate conditions
+		return
+	}
+
+	err = file.Save()
+	if err != nil {
+		panic(err)
 	}
 }
 
