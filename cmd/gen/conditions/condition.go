@@ -11,16 +11,17 @@ import (
 
 const (
 	// badaas/orm/condition.go
-	badaasORMCondition       = "Condition"
-	badaasORMFieldCondition  = "FieldCondition"
-	badaasORMWhereCondition  = "WhereCondition"
-	badaasORMJoinCondition   = "JoinCondition"
-	badaasORMIJoinCondition  = "IJoinCondition"
-	badaasORMFieldIdentifier = "FieldIdentifier"
-	IDFieldID                = "IDFieldID"
-	CreatedAtFieldID         = "CreatedAtFieldID"
-	UpdatedAtFieldID         = "UpdatedAtFieldID"
-	DeletedAtFieldID         = "DeletedAtFieldID"
+	badaasORMCondition            = "Condition"
+	badaasORMFieldCondition       = "FieldCondition"
+	badaasORMWhereCondition       = "WhereCondition"
+	badaasORMJoinCondition        = "JoinCondition"
+	badaasORMIJoinCondition       = "IJoinCondition"
+	badaasORMFieldIdentifier      = "FieldIdentifier"
+	badaasORMNewCollectionPreload = "NewCollectionPreloadCondition"
+	IDFieldID                     = "IDFieldID"
+	CreatedAtFieldID              = "CreatedAtFieldID"
+	UpdatedAtFieldID              = "UpdatedAtFieldID"
+	DeletedAtFieldID              = "DeletedAtFieldID"
 	// badaas/orm/operator.go
 	badaasORMOperator = "Operator"
 	// badaas/orm/baseModels.go
@@ -102,6 +103,13 @@ func (condition *Condition) generateForSlice(objectType Type, field Field) {
 			objectType,
 			field,
 		)
+	case *types.Named:
+		// slice of named types (user defined types)
+		_, err := field.Type.BadaasModelStruct()
+		if err == nil {
+			// field is a Badaas Model
+			condition.generateCollectionPreload(objectType, field)
+		}
 	case *types.Pointer:
 		// slice of pointers, generate code for a slice of the pointed type
 		condition.generateForSlice(
@@ -330,6 +338,52 @@ func (condition *Condition) generateJoin(objectType Type, field Field, t1Field, 
 
 func getPreloadRelationName(objectType Type, field Field) string {
 	return objectType.Name() + "Preload" + field.Name
+}
+
+func (condition *Condition) generateCollectionPreload(objectType Type, field Field) {
+	t1 := jen.Qual(
+		getRelativePackagePath(condition.destPkg, objectType),
+		objectType.Name(),
+	)
+
+	t2 := jen.Qual(
+		getRelativePackagePath(condition.destPkg, field.Type),
+		field.TypeName(),
+	)
+
+	ormT1Condition := jen.Qual(
+		badaasORMPath, badaasORMCondition,
+	).Types(t1)
+	ormT2IJoinCondition := jen.Qual(
+		badaasORMPath, badaasORMIJoinCondition,
+	).Types(t2)
+	ormNewCollectionPreload := jen.Qual(
+		badaasORMPath, badaasORMNewCollectionPreload,
+	).Types(
+		t1, t2,
+	)
+
+	preloadName := getPreloadRelationName(objectType, field)
+
+	condition.codes = append(
+		condition.codes,
+		jen.Func().Id(
+			preloadName,
+		).Params(
+			jen.Id("nestedPreloads").Op("...").Add(ormT2IJoinCondition),
+		).Add(
+			ormT1Condition,
+		).Block(
+			jen.Return(
+				ormNewCollectionPreload.Call(
+					jen.Lit(field.Name),
+					jen.Id("nestedPreloads"),
+				),
+			),
+		),
+	)
+
+	condition.preloadName = preloadName + "()"
 }
 
 // Generate condition names

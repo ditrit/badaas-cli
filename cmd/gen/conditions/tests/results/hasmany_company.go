@@ -31,5 +31,9 @@ func CompanyDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[hasma
 		Operator:        operator,
 	}
 }
+func CompanyPreloadSellers(nestedPreloads ...orm.IJoinCondition[hasmany.Seller]) orm.Condition[hasmany.Company] {
+	return orm.NewCollectionPreloadCondition[hasmany.Company, hasmany.Seller]("Sellers", nestedPreloads)
+}
 
 var CompanyPreloadAttributes = orm.NewPreloadCondition[hasmany.Company]()
+var CompanyPreloadRelations = []orm.Condition[hasmany.Company]{CompanyPreloadSellers()}

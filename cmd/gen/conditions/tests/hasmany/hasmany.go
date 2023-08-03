@@ -5,7 +5,7 @@ import "github.com/ditrit/badaas/orm"
 type Company struct {
 	orm.UUIDModel
 
-	Sellers []Seller // Company HasMany Sellers (Company 0..1 -> 0..* Seller)
+	Sellers *[]Seller // Company HasMany Sellers (Company 0..1 -> 0..* Seller)
 }
 
 type Seller struct {

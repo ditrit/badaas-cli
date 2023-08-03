@@ -115,6 +115,14 @@ func TestHasMany(t *testing.T) {
 	})
 }
 
+func TestHasManyWithPointers(t *testing.T) {
+	doTest(t, "./tests/hasmanywithpointers", []Comparison{
+		{Have: "company_with_pointers_conditions.go", Expected: "./tests/results/hasmanywithpointers_company.go"},
+		{Have: "seller_in_pointers_conditions.go", Expected: "./tests/results/hasmanywithpointers_seller.go"},
+		{Have: "./tests/hasmanywithpointers/badaas-orm.go", Expected: "./tests/hasmanywithpointers/badaas-orm_result.go"},
+	})
+}
+
 func TestSelfReferential(t *testing.T) {
 	doTest(t, "./tests/selfreferential", []Comparison{
 		{Have: "employee_conditions.go", Expected: "./tests/results/selfreferential.go"},

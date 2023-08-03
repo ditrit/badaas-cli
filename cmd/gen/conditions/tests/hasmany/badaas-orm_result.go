@@ -3,6 +3,9 @@ package hasmany
 
 import orm "github.com/ditrit/badaas/orm"
 
+func (m Company) GetSellers() ([]Seller, error) {
+	return orm.VerifyCollectionLoaded[Seller](m.Sellers)
+}
 func (m Seller) GetCompany() (*Company, error) {
 	return orm.VerifyPointerLoaded[Company](m.CompanyID, m.Company)
 }
