@@ -33,9 +33,10 @@ func SellerDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[hasman
 }
 func SellerCompany(conditions ...orm.Condition[hasmany.Company]) orm.Condition[hasmany.Seller] {
 	return orm.JoinCondition[hasmany.Seller, hasmany.Company]{
-		Conditions: conditions,
-		T1Field:    "CompanyID",
-		T2Field:    "ID",
+		Conditions:    conditions,
+		RelationField: "Company",
+		T1Field:       "CompanyID",
+		T2Field:       "ID",
 	}
 }
 func SellerCompanyId(operator orm.Operator[orm.UUID]) orm.WhereCondition[hasmany.Seller] {

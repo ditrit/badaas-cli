@@ -39,8 +39,9 @@ func ComputerName(operator orm.Operator[string]) orm.WhereCondition[overriderefe
 }
 func ComputerProcessor(conditions ...orm.Condition[overridereferencesinverse.Processor]) orm.Condition[overridereferencesinverse.Computer] {
 	return orm.JoinCondition[overridereferencesinverse.Computer, overridereferencesinverse.Processor]{
-		Conditions: conditions,
-		T1Field:    "Name",
-		T2Field:    "ComputerName",
+		Conditions:    conditions,
+		RelationField: "Processor",
+		T1Field:       "Name",
+		T2Field:       "ComputerName",
 	}
 }

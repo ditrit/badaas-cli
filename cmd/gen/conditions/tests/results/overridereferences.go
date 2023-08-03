@@ -33,9 +33,10 @@ func PhoneDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[overrid
 }
 func PhoneBrand(conditions ...orm.Condition[overridereferences.Brand]) orm.Condition[overridereferences.Phone] {
 	return orm.JoinCondition[overridereferences.Phone, overridereferences.Brand]{
-		Conditions: conditions,
-		T1Field:    "BrandName",
-		T2Field:    "Name",
+		Conditions:    conditions,
+		RelationField: "Brand",
+		T1Field:       "BrandName",
+		T2Field:       "Name",
 	}
 }
 func PhoneBrandName(operator orm.Operator[string]) orm.WhereCondition[overridereferences.Phone] {

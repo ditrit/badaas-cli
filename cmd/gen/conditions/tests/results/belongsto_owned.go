@@ -33,9 +33,10 @@ func OwnedDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[belongs
 }
 func OwnedOwner(conditions ...orm.Condition[belongsto.Owner]) orm.Condition[belongsto.Owned] {
 	return orm.JoinCondition[belongsto.Owned, belongsto.Owner]{
-		Conditions: conditions,
-		T1Field:    "OwnerID",
-		T2Field:    "ID",
+		Conditions:    conditions,
+		RelationField: "Owner",
+		T1Field:       "OwnerID",
+		T2Field:       "ID",
 	}
 }
 func OwnedOwnerId(operator orm.Operator[orm.UUID]) orm.WhereCondition[belongsto.Owned] {

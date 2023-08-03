@@ -34,8 +34,9 @@ func Package1DeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[pack
 }
 func Package1Package2(conditions ...orm.Condition[package2.Package2]) orm.Condition[package1.Package1] {
 	return orm.JoinCondition[package1.Package1, package2.Package2]{
-		Conditions: conditions,
-		T1Field:    "ID",
-		T2Field:    "Package1ID",
+		Conditions:    conditions,
+		RelationField: "Package2",
+		T1Field:       "ID",
+		T2Field:       "Package1ID",
 	}
 }

@@ -33,8 +33,9 @@ func UserDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[override
 }
 func UserCreditCard(conditions ...orm.Condition[overrideforeignkeyinverse.CreditCard]) orm.Condition[overrideforeignkeyinverse.User] {
 	return orm.JoinCondition[overrideforeignkeyinverse.User, overrideforeignkeyinverse.CreditCard]{
-		Conditions: conditions,
-		T1Field:    "ID",
-		T2Field:    "UserReference",
+		Conditions:    conditions,
+		RelationField: "CreditCard",
+		T1Field:       "ID",
+		T2Field:       "UserReference",
 	}
 }

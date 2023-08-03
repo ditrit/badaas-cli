@@ -33,9 +33,10 @@ func CityDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[hasone.C
 }
 func CityCountry(conditions ...orm.Condition[hasone.Country]) orm.Condition[hasone.City] {
 	return orm.JoinCondition[hasone.City, hasone.Country]{
-		Conditions: conditions,
-		T1Field:    "CountryID",
-		T2Field:    "ID",
+		Conditions:    conditions,
+		RelationField: "Country",
+		T1Field:       "CountryID",
+		T2Field:       "ID",
 	}
 }
 func CityCountryId(operator orm.Operator[orm.UUID]) orm.WhereCondition[hasone.City] {

@@ -33,9 +33,10 @@ func EmployeeDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[self
 }
 func EmployeeBoss(conditions ...orm.Condition[selfreferential.Employee]) orm.Condition[selfreferential.Employee] {
 	return orm.JoinCondition[selfreferential.Employee, selfreferential.Employee]{
-		Conditions: conditions,
-		T1Field:    "BossID",
-		T2Field:    "ID",
+		Conditions:    conditions,
+		RelationField: "Boss",
+		T1Field:       "BossID",
+		T2Field:       "ID",
 	}
 }
 func EmployeeBossId(operator orm.Operator[orm.UUID]) orm.WhereCondition[selfreferential.Employee] {

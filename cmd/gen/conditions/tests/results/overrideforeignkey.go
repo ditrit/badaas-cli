@@ -33,9 +33,10 @@ func BicycleDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[overr
 }
 func BicycleOwner(conditions ...orm.Condition[overrideforeignkey.Person]) orm.Condition[overrideforeignkey.Bicycle] {
 	return orm.JoinCondition[overrideforeignkey.Bicycle, overrideforeignkey.Person]{
-		Conditions: conditions,
-		T1Field:    "OwnerSomethingID",
-		T2Field:    "ID",
+		Conditions:    conditions,
+		RelationField: "Owner",
+		T1Field:       "OwnerSomethingID",
+		T2Field:       "ID",
 	}
 }
 func BicycleOwnerSomethingId(operator orm.Operator[string]) orm.WhereCondition[overrideforeignkey.Bicycle] {
