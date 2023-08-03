@@ -31,10 +31,3 @@ func CompanyDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[hasma
 		Operator: operator,
 	}
 }
-func SellerCompany(conditions ...orm.Condition[hasmany.Company]) orm.Condition[hasmany.Seller] {
-	return orm.JoinCondition[hasmany.Seller, hasmany.Company]{
-		Conditions: conditions,
-		T1Field:    "CompanyID",
-		T2Field:    "ID",
-	}
-}

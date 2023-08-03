@@ -82,16 +82,6 @@ func (condition *Condition) generateForSlice(objectType Type, field Field) {
 			objectType,
 			field,
 		)
-	case *types.Named:
-		// slice of named types (user defined types)
-		_, err := field.Type.BadaasModelStruct()
-		if err == nil {
-			// slice of Badaas models -> hasMany relation
-			condition.generateInverseJoin(
-				objectType,
-				field,
-			)
-		}
 	case *types.Pointer:
 		// slice of pointers, generate code for a slice of the pointed type
 		condition.generateForSlice(
@@ -142,11 +132,6 @@ func (condition *Condition) generateForBadaasModel(objectType Type, field Field)
 	} else {
 		// hasOne relation
 		condition.generateJoinWithoutFK(
-			objectType,
-			field,
-		)
-
-		condition.generateInverseJoin(
 			objectType,
 			field,
 		)
@@ -205,18 +190,6 @@ func (condition *Condition) generateWhere(objectType Type, field Field) {
 				fieldCondition.Clone().Values(conditionValues),
 			),
 		),
-	)
-}
-
-// Generate a inverse JoinCondition, so from the field's object to the object
-func (condition *Condition) generateInverseJoin(objectType Type, field Field) {
-	condition.generateJoinWithFK(
-		field.Type,
-		Field{
-			Name: objectType.Name(),
-			Type: objectType,
-			Tags: field.Tags,
-		},
 	)
 }
 

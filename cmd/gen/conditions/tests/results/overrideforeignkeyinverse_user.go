@@ -38,10 +38,3 @@ func UserCreditCard(conditions ...orm.Condition[overrideforeignkeyinverse.Credit
 		T2Field:    "UserReference",
 	}
 }
-func CreditCardUser(conditions ...orm.Condition[overrideforeignkeyinverse.User]) orm.Condition[overrideforeignkeyinverse.CreditCard] {
-	return orm.JoinCondition[overrideforeignkeyinverse.CreditCard, overrideforeignkeyinverse.User]{
-		Conditions: conditions,
-		T1Field:    "UserReference",
-		T2Field:    "ID",
-	}
-}

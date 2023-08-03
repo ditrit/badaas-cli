@@ -39,10 +39,3 @@ func Package1Package2(conditions ...orm.Condition[package2.Package2]) orm.Condit
 		T2Field:    "Package1ID",
 	}
 }
-func Package2Package1(conditions ...orm.Condition[package1.Package1]) orm.Condition[package2.Package2] {
-	return orm.JoinCondition[package2.Package2, package1.Package1]{
-		Conditions: conditions,
-		T1Field:    "Package1ID",
-		T2Field:    "ID",
-	}
-}

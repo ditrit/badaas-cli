@@ -38,10 +38,3 @@ func CountryCapital(conditions ...orm.Condition[hasone.City]) orm.Condition[haso
 		T2Field:    "CountryID",
 	}
 }
-func CityCountry(conditions ...orm.Condition[hasone.Country]) orm.Condition[hasone.City] {
-	return orm.JoinCondition[hasone.City, hasone.Country]{
-		Conditions: conditions,
-		T1Field:    "CountryID",
-		T2Field:    "ID",
-	}
-}

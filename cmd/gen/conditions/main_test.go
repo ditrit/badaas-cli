@@ -129,16 +129,16 @@ func TestOverrideReferences(t *testing.T) {
 
 func TestOverrideForeignKeyInverse(t *testing.T) {
 	doTest(t, "./tests/overrideforeignkeyinverse", []Comparison{
-		{Have: "user_conditions.go", Expected: "./tests/results/overrideforeignkeyinverse.go"},
+		{Have: "user_conditions.go", Expected: "./tests/results/overrideforeignkeyinverse_user.go"},
+		{Have: "credit_card_conditions.go", Expected: "./tests/results/overrideforeignkeyinverse_credit_card.go"},
 	})
-	utils.RemoveFile("credit_card_conditions.go")
 }
 
 func TestOverrideReferencesInverse(t *testing.T) {
 	doTest(t, "./tests/overridereferencesinverse", []Comparison{
-		{Have: "computer_conditions.go", Expected: "./tests/results/overridereferencesinverse.go"},
+		{Have: "computer_conditions.go", Expected: "./tests/results/overridereferencesinverse_computer.go"},
+		{Have: "processor_conditions.go", Expected: "./tests/results/overridereferencesinverse_processor.go"},
 	})
-	utils.RemoveFile("processor_conditions.go")
 }
 
 type Comparison struct {

@@ -44,10 +44,3 @@ func ComputerProcessor(conditions ...orm.Condition[overridereferencesinverse.Pro
 		T2Field:    "ComputerName",
 	}
 }
-func ProcessorComputer(conditions ...orm.Condition[overridereferencesinverse.Computer]) orm.Condition[overridereferencesinverse.Processor] {
-	return orm.JoinCondition[overridereferencesinverse.Processor, overridereferencesinverse.Computer]{
-		Conditions: conditions,
-		T1Field:    "ComputerName",
-		T2Field:    "Name",
-	}
-}
