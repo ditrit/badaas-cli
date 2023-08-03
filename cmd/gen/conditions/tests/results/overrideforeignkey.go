@@ -48,3 +48,5 @@ func BicycleOwnerSomethingId(operator orm.Operator[string]) orm.WhereCondition[o
 		Operator:        operator,
 	}
 }
+
+var BicyclePreloadAttributes = orm.NewPreloadCondition[overrideforeignkey.Bicycle](bicycleOwnerSomethingIdFieldID)

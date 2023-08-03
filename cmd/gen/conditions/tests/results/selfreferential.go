@@ -48,3 +48,5 @@ func EmployeeBossId(operator orm.Operator[orm.UUID]) orm.WhereCondition[selfrefe
 		Operator:        operator,
 	}
 }
+
+var EmployeePreloadAttributes = orm.NewPreloadCondition[selfreferential.Employee](employeeBossIdFieldID)

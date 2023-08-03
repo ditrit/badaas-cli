@@ -31,3 +31,5 @@ func UintModelDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[uin
 		Operator:        operator,
 	}
 }
+
+var UintModelPreloadAttributes = orm.NewPreloadCondition[uintmodel.UintModel]()

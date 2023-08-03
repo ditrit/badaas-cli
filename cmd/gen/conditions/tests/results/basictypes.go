@@ -193,3 +193,5 @@ func BasicTypesByte(operator orm.Operator[uint8]) orm.WhereCondition[basictypes.
 		Operator:        operator,
 	}
 }
+
+var BasicTypesPreloadAttributes = orm.NewPreloadCondition[basictypes.BasicTypes](basicTypesBoolFieldID, basicTypesIntFieldID, basicTypesInt8FieldID, basicTypesInt16FieldID, basicTypesInt32FieldID, basicTypesInt64FieldID, basicTypesUIntFieldID, basicTypesUInt8FieldID, basicTypesUInt16FieldID, basicTypesUInt32FieldID, basicTypesUInt64FieldID, basicTypesUIntptrFieldID, basicTypesFloat32FieldID, basicTypesFloat64FieldID, basicTypesComplex64FieldID, basicTypesComplex128FieldID, basicTypesStringFieldID, basicTypesByteFieldID)

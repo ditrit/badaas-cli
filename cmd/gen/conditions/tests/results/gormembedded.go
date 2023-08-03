@@ -61,3 +61,5 @@ func GormEmbeddedGormEmbeddedNoPrefixInt(operator orm.Operator[int]) orm.WhereCo
 		Operator:        operator,
 	}
 }
+
+var GormEmbeddedPreloadAttributes = orm.NewPreloadCondition[gormembedded.GormEmbedded](gormEmbeddedIntFieldID, gormEmbeddedGormEmbeddedIntFieldID, gormEmbeddedGormEmbeddedNoPrefixIntFieldID)

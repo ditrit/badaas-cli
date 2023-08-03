@@ -39,3 +39,5 @@ func CountryCapital(conditions ...orm.Condition[hasone.City]) orm.Condition[haso
 		T2Field:       "CountryID",
 	}
 }
+
+var CountryPreloadAttributes = orm.NewPreloadCondition[hasone.Country]()

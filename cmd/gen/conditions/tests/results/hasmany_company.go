@@ -31,3 +31,5 @@ func CompanyDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[hasma
 		Operator:        operator,
 	}
 }
+
+var CompanyPreloadAttributes = orm.NewPreloadCondition[hasmany.Company]()

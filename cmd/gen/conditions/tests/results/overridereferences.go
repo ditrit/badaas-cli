@@ -48,3 +48,5 @@ func PhoneBrandName(operator orm.Operator[string]) orm.WhereCondition[overridere
 		Operator:        operator,
 	}
 }
+
+var PhonePreloadAttributes = orm.NewPreloadCondition[overridereferences.Phone](phoneBrandNameFieldID)

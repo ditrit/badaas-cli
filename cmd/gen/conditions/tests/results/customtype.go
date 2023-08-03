@@ -40,3 +40,5 @@ func CustomTypeCustom(operator orm.Operator[customtype.MultiString]) orm.WhereCo
 		Operator:        operator,
 	}
 }
+
+var CustomTypePreloadAttributes = orm.NewPreloadCondition[customtype.CustomType](customTypeCustomFieldID)

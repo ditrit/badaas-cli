@@ -31,3 +31,5 @@ func OwnerDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[belongs
 		Operator:        operator,
 	}
 }
+
+var OwnerPreloadAttributes = orm.NewPreloadCondition[belongsto.Owner]()

@@ -48,3 +48,5 @@ func OwnedOwnerId(operator orm.Operator[orm.UUID]) orm.WhereCondition[belongsto.
 		Operator:        operator,
 	}
 }
+
+var OwnedPreloadAttributes = orm.NewPreloadCondition[belongsto.Owned](ownedOwnerIdFieldID)

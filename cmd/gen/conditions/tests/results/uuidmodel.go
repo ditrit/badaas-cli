@@ -31,3 +31,5 @@ func UUIDModelDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[uui
 		Operator:        operator,
 	}
 }
+
+var UUIDModelPreloadAttributes = orm.NewPreloadCondition[uuidmodel.UUIDModel]()

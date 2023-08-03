@@ -40,3 +40,5 @@ func ProcessorComputerName(operator orm.Operator[string]) orm.WhereCondition[ove
 		Operator:        operator,
 	}
 }
+
+var ProcessorPreloadAttributes = orm.NewPreloadCondition[overridereferencesinverse.Processor](processorComputerNameFieldID)

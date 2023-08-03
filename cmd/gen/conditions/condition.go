@@ -35,9 +35,10 @@ var constantFieldIdentifiers = map[string]*jen.Statement{
 }
 
 type Condition struct {
-	codes   []jen.Code
-	param   *JenParam
-	destPkg string
+	codes           []jen.Code
+	param           *JenParam
+	destPkg         string
+	fieldIdentifier string
 }
 
 func NewCondition(destPkg string, objectType Type, field Field) *Condition {
@@ -232,6 +233,8 @@ func (condition *Condition) createFieldIdentifier(field Field, conditionName str
 			fieldIdentifierName,
 		).Op("=").Add(fieldIdentifierVar),
 	)
+
+	condition.fieldIdentifier = fieldIdentifierName
 
 	return jen.Qual("", fieldIdentifierName)
 }

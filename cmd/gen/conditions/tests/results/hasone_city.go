@@ -48,3 +48,5 @@ func CityCountryId(operator orm.Operator[orm.UUID]) orm.WhereCondition[hasone.Ci
 		Operator:        operator,
 	}
 }
+
+var CityPreloadAttributes = orm.NewPreloadCondition[hasone.City](cityCountryIdFieldID)

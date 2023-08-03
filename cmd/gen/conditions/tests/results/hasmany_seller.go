@@ -48,3 +48,5 @@ func SellerCompanyId(operator orm.Operator[orm.UUID]) orm.WhereCondition[hasmany
 		Operator:        operator,
 	}
 }
+
+var SellerPreloadAttributes = orm.NewPreloadCondition[hasmany.Seller](sellerCompanyIdFieldID)

@@ -39,3 +39,5 @@ func UserCreditCard(conditions ...orm.Condition[overrideforeignkeyinverse.Credit
 		T2Field:       "UserReference",
 	}
 }
+
+var UserPreloadAttributes = orm.NewPreloadCondition[overrideforeignkeyinverse.User]()

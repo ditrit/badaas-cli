@@ -40,3 +40,5 @@ func ColumnDefinitionString(operator orm.Operator[string]) orm.WhereCondition[co
 		Operator:        operator,
 	}
 }
+
+var ColumnDefinitionPreloadAttributes = orm.NewPreloadCondition[columndefinition.ColumnDefinition](columnDefinitionStringFieldID)

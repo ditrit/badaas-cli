@@ -48,3 +48,5 @@ func ComputerProcessor(conditions ...orm.Condition[overridereferencesinverse.Pro
 		T2Field:       "ComputerName",
 	}
 }
+
+var ComputerPreloadAttributes = orm.NewPreloadCondition[overridereferencesinverse.Computer](computerNameFieldID)

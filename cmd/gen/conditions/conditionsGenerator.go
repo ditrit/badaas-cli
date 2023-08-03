@@ -3,8 +3,12 @@ package conditions
 import (
 	"go/types"
 
+	"github.com/dave/jennifer/jen"
+
 	"github.com/ditrit/badaas-cli/cmd/log"
 )
+
+const badaasORMNewPreloadCondition = "NewPreloadCondition"
 
 type ConditionsGenerator struct {
 	object     types.Object
@@ -30,11 +34,40 @@ func (cg ConditionsGenerator) Into(file *File) error {
 	// Add one condition for each field of the object
 	conditions := cg.ForEachField(file, fields)
 
+	objectName := cg.object.Name()
+	objectQual := jen.Qual(
+		getRelativePackagePath(file.destPkg, cg.objectType),
+		cg.objectType.Name(),
+	)
+
+	preloadAttributesCondition := jen.Var().Id(
+		getPreloadAttributesName(objectName),
+	).Op("=").Add(jen.Qual(
+		badaasORMPath, badaasORMNewPreloadCondition,
+	)).Types(
+		objectQual,
+	)
+	fieldIdentifiers := []jen.Code{}
+
 	for _, condition := range conditions {
 		file.Add(condition.codes...)
+
+		// add all field names to the list of fields of the preload condition
+		if condition.fieldIdentifier != "" {
+			fieldIdentifiers = append(
+				fieldIdentifiers,
+				jen.Qual("", condition.fieldIdentifier),
+			)
+		}
 	}
 
+	file.Add(preloadAttributesCondition.Call(fieldIdentifiers...))
+
 	return nil
+}
+
+func getPreloadAttributesName(objectName string) string {
+	return objectName + "PreloadAttributes"
 }
 
 // Generate the conditions for each of the object's fields

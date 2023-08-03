@@ -103,3 +103,5 @@ func NullableTypesTime(operator orm.Operator[time.Time]) orm.WhereCondition[null
 		Operator:        operator,
 	}
 }
+
+var NullableTypesPreloadAttributes = orm.NewPreloadCondition[nullabletypes.NullableTypes](nullableTypesStringFieldID, nullableTypesInt64FieldID, nullableTypesInt32FieldID, nullableTypesInt16FieldID, nullableTypesByteFieldID, nullableTypesFloat64FieldID, nullableTypesBoolFieldID, nullableTypesTimeFieldID)

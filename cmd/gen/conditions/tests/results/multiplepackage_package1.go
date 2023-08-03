@@ -40,3 +40,5 @@ func Package1Package2(conditions ...orm.Condition[package2.Package2]) orm.Condit
 		T2Field:       "Package1ID",
 	}
 }
+
+var Package1PreloadAttributes = orm.NewPreloadCondition[package1.Package1]()

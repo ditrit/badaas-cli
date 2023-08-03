@@ -193,3 +193,5 @@ func BasicSlicesPointerByte(operator orm.Operator[[]uint8]) orm.WhereCondition[b
 		Operator:        operator,
 	}
 }
+
+var BasicSlicesPointerPreloadAttributes = orm.NewPreloadCondition[basicslicespointer.BasicSlicesPointer](basicSlicesPointerBoolFieldID, basicSlicesPointerIntFieldID, basicSlicesPointerInt8FieldID, basicSlicesPointerInt16FieldID, basicSlicesPointerInt32FieldID, basicSlicesPointerInt64FieldID, basicSlicesPointerUIntFieldID, basicSlicesPointerUInt8FieldID, basicSlicesPointerUInt16FieldID, basicSlicesPointerUInt32FieldID, basicSlicesPointerUInt64FieldID, basicSlicesPointerUIntptrFieldID, basicSlicesPointerFloat32FieldID, basicSlicesPointerFloat64FieldID, basicSlicesPointerComplex64FieldID, basicSlicesPointerComplex128FieldID, basicSlicesPointerStringFieldID, basicSlicesPointerByteFieldID)

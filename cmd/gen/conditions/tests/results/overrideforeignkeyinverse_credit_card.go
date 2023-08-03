@@ -40,3 +40,5 @@ func CreditCardUserReference(operator orm.Operator[orm.UUID]) orm.WhereCondition
 		Operator:        operator,
 	}
 }
+
+var CreditCardPreloadAttributes = orm.NewPreloadCondition[overrideforeignkeyinverse.CreditCard](creditCardUserReferenceFieldID)

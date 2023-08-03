@@ -49,3 +49,5 @@ func GoEmbeddedToBeEmbeddedInt(operator orm.Operator[int]) orm.WhereCondition[go
 		Operator:        operator,
 	}
 }
+
+var GoEmbeddedPreloadAttributes = orm.NewPreloadCondition[goembedded.GoEmbedded](goEmbeddedIntFieldID, goEmbeddedToBeEmbeddedIntFieldID)
