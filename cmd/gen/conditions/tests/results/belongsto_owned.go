@@ -9,26 +9,26 @@ import (
 
 func OwnedId(operator orm.Operator[orm.UUID]) orm.WhereCondition[belongsto.Owned] {
 	return orm.FieldCondition[belongsto.Owned, orm.UUID]{
-		Field:    "ID",
-		Operator: operator,
+		FieldIdentifier: orm.IDFieldID,
+		Operator:        operator,
 	}
 }
 func OwnedCreatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[belongsto.Owned] {
 	return orm.FieldCondition[belongsto.Owned, time.Time]{
-		Field:    "CreatedAt",
-		Operator: operator,
+		FieldIdentifier: orm.CreatedAtFieldID,
+		Operator:        operator,
 	}
 }
 func OwnedUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[belongsto.Owned] {
 	return orm.FieldCondition[belongsto.Owned, time.Time]{
-		Field:    "UpdatedAt",
-		Operator: operator,
+		FieldIdentifier: orm.UpdatedAtFieldID,
+		Operator:        operator,
 	}
 }
 func OwnedDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[belongsto.Owned] {
 	return orm.FieldCondition[belongsto.Owned, time.Time]{
-		Field:    "DeletedAt",
-		Operator: operator,
+		FieldIdentifier: orm.DeletedAtFieldID,
+		Operator:        operator,
 	}
 }
 func OwnedOwner(conditions ...orm.Condition[belongsto.Owner]) orm.Condition[belongsto.Owned] {
@@ -39,9 +39,12 @@ func OwnedOwner(conditions ...orm.Condition[belongsto.Owner]) orm.Condition[belo
 		T2Field:       "ID",
 	}
 }
+
+var ownedOwnerIdFieldID = orm.FieldIdentifier{Field: "OwnerID"}
+
 func OwnedOwnerId(operator orm.Operator[orm.UUID]) orm.WhereCondition[belongsto.Owned] {
 	return orm.FieldCondition[belongsto.Owned, orm.UUID]{
-		Field:    "OwnerID",
-		Operator: operator,
+		FieldIdentifier: ownedOwnerIdFieldID,
+		Operator:        operator,
 	}
 }

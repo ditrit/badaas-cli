@@ -9,25 +9,25 @@ import (
 
 func CompanyId(operator orm.Operator[orm.UUID]) orm.WhereCondition[hasmany.Company] {
 	return orm.FieldCondition[hasmany.Company, orm.UUID]{
-		Field:    "ID",
-		Operator: operator,
+		FieldIdentifier: orm.IDFieldID,
+		Operator:        operator,
 	}
 }
 func CompanyCreatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[hasmany.Company] {
 	return orm.FieldCondition[hasmany.Company, time.Time]{
-		Field:    "CreatedAt",
-		Operator: operator,
+		FieldIdentifier: orm.CreatedAtFieldID,
+		Operator:        operator,
 	}
 }
 func CompanyUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[hasmany.Company] {
 	return orm.FieldCondition[hasmany.Company, time.Time]{
-		Field:    "UpdatedAt",
-		Operator: operator,
+		FieldIdentifier: orm.UpdatedAtFieldID,
+		Operator:        operator,
 	}
 }
 func CompanyDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[hasmany.Company] {
 	return orm.FieldCondition[hasmany.Company, time.Time]{
-		Field:    "DeletedAt",
-		Operator: operator,
+		FieldIdentifier: orm.DeletedAtFieldID,
+		Operator:        operator,
 	}
 }

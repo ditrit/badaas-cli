@@ -9,26 +9,26 @@ import (
 
 func CityId(operator orm.Operator[orm.UUID]) orm.WhereCondition[hasone.City] {
 	return orm.FieldCondition[hasone.City, orm.UUID]{
-		Field:    "ID",
-		Operator: operator,
+		FieldIdentifier: orm.IDFieldID,
+		Operator:        operator,
 	}
 }
 func CityCreatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[hasone.City] {
 	return orm.FieldCondition[hasone.City, time.Time]{
-		Field:    "CreatedAt",
-		Operator: operator,
+		FieldIdentifier: orm.CreatedAtFieldID,
+		Operator:        operator,
 	}
 }
 func CityUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[hasone.City] {
 	return orm.FieldCondition[hasone.City, time.Time]{
-		Field:    "UpdatedAt",
-		Operator: operator,
+		FieldIdentifier: orm.UpdatedAtFieldID,
+		Operator:        operator,
 	}
 }
 func CityDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[hasone.City] {
 	return orm.FieldCondition[hasone.City, time.Time]{
-		Field:    "DeletedAt",
-		Operator: operator,
+		FieldIdentifier: orm.DeletedAtFieldID,
+		Operator:        operator,
 	}
 }
 func CityCountry(conditions ...orm.Condition[hasone.Country]) orm.Condition[hasone.City] {
@@ -39,9 +39,12 @@ func CityCountry(conditions ...orm.Condition[hasone.Country]) orm.Condition[haso
 		T2Field:       "ID",
 	}
 }
+
+var cityCountryIdFieldID = orm.FieldIdentifier{Field: "CountryID"}
+
 func CityCountryId(operator orm.Operator[orm.UUID]) orm.WhereCondition[hasone.City] {
 	return orm.FieldCondition[hasone.City, orm.UUID]{
-		Field:    "CountryID",
-		Operator: operator,
+		FieldIdentifier: cityCountryIdFieldID,
+		Operator:        operator,
 	}
 }

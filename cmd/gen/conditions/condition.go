@@ -11,16 +11,28 @@ import (
 
 const (
 	// badaas/orm/condition.go
-	badaasORMCondition      = "Condition"
-	badaasORMFieldCondition = "FieldCondition"
-	badaasORMWhereCondition = "WhereCondition"
-	badaasORMJoinCondition  = "JoinCondition"
+	badaasORMCondition       = "Condition"
+	badaasORMFieldCondition  = "FieldCondition"
+	badaasORMWhereCondition  = "WhereCondition"
+	badaasORMJoinCondition   = "JoinCondition"
+	badaasORMFieldIdentifier = "FieldIdentifier"
+	IDFieldID                = "IDFieldID"
+	CreatedAtFieldID         = "CreatedAtFieldID"
+	UpdatedAtFieldID         = "UpdatedAtFieldID"
+	DeletedAtFieldID         = "DeletedAtFieldID"
 	// badaas/orm/operator.go
 	badaasORMOperator = "Operator"
 	// badaas/orm/baseModels.go
 	uuidModel = "UUIDModel"
 	uIntModel = "UIntModel"
 )
+
+var constantFieldIdentifiers = map[string]*jen.Statement{
+	"ID":        jen.Qual(badaasORMPath, IDFieldID),
+	"CreatedAt": jen.Qual(badaasORMPath, CreatedAtFieldID),
+	"UpdatedAt": jen.Qual(badaasORMPath, UpdatedAtFieldID),
+	"DeletedAt": jen.Qual(badaasORMPath, DeletedAtFieldID),
+}
 
 type Condition struct {
 	codes   []jen.Code
@@ -164,20 +176,12 @@ func (condition *Condition) generateWhere(objectType Type, field Field) {
 	conditionName := getConditionName(objectType, field)
 	log.Logger.Debugf("Generated %q", conditionName)
 
-	conditionValues := jen.Dict{
-		jen.Id("Operator"): jen.Id("operator"),
-	}
-	columnName := field.getColumnName()
+	var fieldIdentifier *jen.Statement
 
-	if columnName != "" {
-		conditionValues[jen.Id("Column")] = jen.Lit(columnName)
+	if constantFieldIdentifier, ok := constantFieldIdentifiers[field.Name]; ok {
+		fieldIdentifier = constantFieldIdentifier
 	} else {
-		conditionValues[jen.Id("Field")] = jen.Lit(field.Name)
-	}
-
-	columnPrefix := field.ColumnPrefix
-	if columnPrefix != "" {
-		conditionValues[jen.Id("ColumnPrefix")] = jen.Lit(columnPrefix)
+		fieldIdentifier = condition.createFieldIdentifier(field, conditionName)
 	}
 
 	condition.codes = append(
@@ -190,10 +194,46 @@ func (condition *Condition) generateWhere(objectType Type, field Field) {
 			whereCondition,
 		).Block(
 			jen.Return(
-				fieldCondition.Clone().Values(conditionValues),
+				fieldCondition.Clone().Values(jen.Dict{
+					jen.Id("Operator"):        jen.Id("operator"),
+					jen.Id("FieldIdentifier"): fieldIdentifier,
+				}),
 			),
 		),
 	)
+}
+
+// create a variable containing the definition of the field identifier
+// to use it in the where condition and in the preload condition
+func (condition *Condition) createFieldIdentifier(field Field, conditionName string) *jen.Statement {
+	fieldIdentifierValues := jen.Dict{}
+	columnName := field.getColumnName()
+
+	if columnName != "" {
+		fieldIdentifierValues[jen.Id("Column")] = jen.Lit(columnName)
+	} else {
+		fieldIdentifierValues[jen.Id("Field")] = jen.Lit(field.Name)
+	}
+
+	columnPrefix := field.ColumnPrefix
+	if columnPrefix != "" {
+		fieldIdentifierValues[jen.Id("ColumnPrefix")] = jen.Lit(columnPrefix)
+	}
+
+	fieldIdentifierVar := jen.Qual(
+		badaasORMPath, badaasORMFieldIdentifier,
+	).Values(fieldIdentifierValues)
+
+	fieldIdentifierName := strcase.ToCamel(conditionName) + "FieldID"
+
+	condition.codes = append(
+		condition.codes,
+		jen.Var().Id(
+			fieldIdentifierName,
+		).Op("=").Add(fieldIdentifierVar),
+	)
+
+	return jen.Qual("", fieldIdentifierName)
 }
 
 // Generate a JoinCondition between the object and field's object

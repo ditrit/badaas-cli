@@ -9,31 +9,34 @@ import (
 
 func ProcessorId(operator orm.Operator[orm.UUID]) orm.WhereCondition[overridereferencesinverse.Processor] {
 	return orm.FieldCondition[overridereferencesinverse.Processor, orm.UUID]{
-		Field:    "ID",
-		Operator: operator,
+		FieldIdentifier: orm.IDFieldID,
+		Operator:        operator,
 	}
 }
 func ProcessorCreatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[overridereferencesinverse.Processor] {
 	return orm.FieldCondition[overridereferencesinverse.Processor, time.Time]{
-		Field:    "CreatedAt",
-		Operator: operator,
+		FieldIdentifier: orm.CreatedAtFieldID,
+		Operator:        operator,
 	}
 }
 func ProcessorUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[overridereferencesinverse.Processor] {
 	return orm.FieldCondition[overridereferencesinverse.Processor, time.Time]{
-		Field:    "UpdatedAt",
-		Operator: operator,
+		FieldIdentifier: orm.UpdatedAtFieldID,
+		Operator:        operator,
 	}
 }
 func ProcessorDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[overridereferencesinverse.Processor] {
 	return orm.FieldCondition[overridereferencesinverse.Processor, time.Time]{
-		Field:    "DeletedAt",
-		Operator: operator,
+		FieldIdentifier: orm.DeletedAtFieldID,
+		Operator:        operator,
 	}
 }
+
+var processorComputerNameFieldID = orm.FieldIdentifier{Field: "ComputerName"}
+
 func ProcessorComputerName(operator orm.Operator[string]) orm.WhereCondition[overridereferencesinverse.Processor] {
 	return orm.FieldCondition[overridereferencesinverse.Processor, string]{
-		Field:    "ComputerName",
-		Operator: operator,
+		FieldIdentifier: processorComputerNameFieldID,
+		Operator:        operator,
 	}
 }

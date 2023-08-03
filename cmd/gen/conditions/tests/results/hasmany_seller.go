@@ -9,26 +9,26 @@ import (
 
 func SellerId(operator orm.Operator[orm.UUID]) orm.WhereCondition[hasmany.Seller] {
 	return orm.FieldCondition[hasmany.Seller, orm.UUID]{
-		Field:    "ID",
-		Operator: operator,
+		FieldIdentifier: orm.IDFieldID,
+		Operator:        operator,
 	}
 }
 func SellerCreatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[hasmany.Seller] {
 	return orm.FieldCondition[hasmany.Seller, time.Time]{
-		Field:    "CreatedAt",
-		Operator: operator,
+		FieldIdentifier: orm.CreatedAtFieldID,
+		Operator:        operator,
 	}
 }
 func SellerUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[hasmany.Seller] {
 	return orm.FieldCondition[hasmany.Seller, time.Time]{
-		Field:    "UpdatedAt",
-		Operator: operator,
+		FieldIdentifier: orm.UpdatedAtFieldID,
+		Operator:        operator,
 	}
 }
 func SellerDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[hasmany.Seller] {
 	return orm.FieldCondition[hasmany.Seller, time.Time]{
-		Field:    "DeletedAt",
-		Operator: operator,
+		FieldIdentifier: orm.DeletedAtFieldID,
+		Operator:        operator,
 	}
 }
 func SellerCompany(conditions ...orm.Condition[hasmany.Company]) orm.Condition[hasmany.Seller] {
@@ -39,9 +39,12 @@ func SellerCompany(conditions ...orm.Condition[hasmany.Company]) orm.Condition[h
 		T2Field:       "ID",
 	}
 }
+
+var sellerCompanyIdFieldID = orm.FieldIdentifier{Field: "CompanyID"}
+
 func SellerCompanyId(operator orm.Operator[orm.UUID]) orm.WhereCondition[hasmany.Seller] {
 	return orm.FieldCondition[hasmany.Seller, orm.UUID]{
-		Field:    "CompanyID",
-		Operator: operator,
+		FieldIdentifier: sellerCompanyIdFieldID,
+		Operator:        operator,
 	}
 }

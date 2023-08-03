@@ -9,37 +9,43 @@ import (
 
 func GoEmbeddedId(operator orm.Operator[uint]) orm.WhereCondition[goembedded.GoEmbedded] {
 	return orm.FieldCondition[goembedded.GoEmbedded, uint]{
-		Field:    "ID",
-		Operator: operator,
+		FieldIdentifier: orm.IDFieldID,
+		Operator:        operator,
 	}
 }
 func GoEmbeddedCreatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[goembedded.GoEmbedded] {
 	return orm.FieldCondition[goembedded.GoEmbedded, time.Time]{
-		Field:    "CreatedAt",
-		Operator: operator,
+		FieldIdentifier: orm.CreatedAtFieldID,
+		Operator:        operator,
 	}
 }
 func GoEmbeddedUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[goembedded.GoEmbedded] {
 	return orm.FieldCondition[goembedded.GoEmbedded, time.Time]{
-		Field:    "UpdatedAt",
-		Operator: operator,
+		FieldIdentifier: orm.UpdatedAtFieldID,
+		Operator:        operator,
 	}
 }
 func GoEmbeddedDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[goembedded.GoEmbedded] {
 	return orm.FieldCondition[goembedded.GoEmbedded, time.Time]{
-		Field:    "DeletedAt",
-		Operator: operator,
+		FieldIdentifier: orm.DeletedAtFieldID,
+		Operator:        operator,
 	}
 }
+
+var goEmbeddedIntFieldID = orm.FieldIdentifier{Field: "Int"}
+
 func GoEmbeddedInt(operator orm.Operator[int]) orm.WhereCondition[goembedded.GoEmbedded] {
 	return orm.FieldCondition[goembedded.GoEmbedded, int]{
-		Field:    "Int",
-		Operator: operator,
+		FieldIdentifier: goEmbeddedIntFieldID,
+		Operator:        operator,
 	}
 }
+
+var goEmbeddedToBeEmbeddedIntFieldID = orm.FieldIdentifier{Field: "Int"}
+
 func GoEmbeddedToBeEmbeddedInt(operator orm.Operator[int]) orm.WhereCondition[goembedded.GoEmbedded] {
 	return orm.FieldCondition[goembedded.GoEmbedded, int]{
-		Field:    "Int",
-		Operator: operator,
+		FieldIdentifier: goEmbeddedToBeEmbeddedIntFieldID,
+		Operator:        operator,
 	}
 }

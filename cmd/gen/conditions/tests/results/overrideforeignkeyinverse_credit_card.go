@@ -9,31 +9,34 @@ import (
 
 func CreditCardId(operator orm.Operator[orm.UUID]) orm.WhereCondition[overrideforeignkeyinverse.CreditCard] {
 	return orm.FieldCondition[overrideforeignkeyinverse.CreditCard, orm.UUID]{
-		Field:    "ID",
-		Operator: operator,
+		FieldIdentifier: orm.IDFieldID,
+		Operator:        operator,
 	}
 }
 func CreditCardCreatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[overrideforeignkeyinverse.CreditCard] {
 	return orm.FieldCondition[overrideforeignkeyinverse.CreditCard, time.Time]{
-		Field:    "CreatedAt",
-		Operator: operator,
+		FieldIdentifier: orm.CreatedAtFieldID,
+		Operator:        operator,
 	}
 }
 func CreditCardUpdatedAt(operator orm.Operator[time.Time]) orm.WhereCondition[overrideforeignkeyinverse.CreditCard] {
 	return orm.FieldCondition[overrideforeignkeyinverse.CreditCard, time.Time]{
-		Field:    "UpdatedAt",
-		Operator: operator,
+		FieldIdentifier: orm.UpdatedAtFieldID,
+		Operator:        operator,
 	}
 }
 func CreditCardDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[overrideforeignkeyinverse.CreditCard] {
 	return orm.FieldCondition[overrideforeignkeyinverse.CreditCard, time.Time]{
-		Field:    "DeletedAt",
-		Operator: operator,
+		FieldIdentifier: orm.DeletedAtFieldID,
+		Operator:        operator,
 	}
 }
+
+var creditCardUserReferenceFieldID = orm.FieldIdentifier{Field: "UserReference"}
+
 func CreditCardUserReference(operator orm.Operator[orm.UUID]) orm.WhereCondition[overrideforeignkeyinverse.CreditCard] {
 	return orm.FieldCondition[overrideforeignkeyinverse.CreditCard, orm.UUID]{
-		Field:    "UserReference",
-		Operator: operator,
+		FieldIdentifier: creditCardUserReferenceFieldID,
+		Operator:        operator,
 	}
 }
