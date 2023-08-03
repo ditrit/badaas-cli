@@ -24,6 +24,8 @@ const (
 	// badaas/orm/operator.go
 	badaasORMOperator = "Operator"
 	// badaas/orm/baseModels.go
+	uIntID    = "UIntID"
+	uuid      = "UUID"
 	uuidModel = "UUIDModel"
 	uIntModel = "UIntModel"
 )
@@ -125,9 +127,10 @@ func (condition *Condition) generateForNamedType(objectType Type, field Field) {
 			objectType,
 			field,
 		)
-	} else if field.Type.IsGormCustomType() || field.TypeString() == "time.Time" {
+	} else if field.Type.IsGormCustomType() || field.TypeString() == "time.Time" || field.IsModelID() {
 		// field is a Gorm Custom type (implements Scanner and Valuer interfaces)
 		// or a named type supported by gorm (time.Time)
+		// or a badaas-orm id (uuid or uintid)
 		condition.param.ToCustomType(condition.destPkg, field.Type)
 		condition.generateWhere(
 			objectType,
@@ -140,15 +143,15 @@ func (condition *Condition) generateForNamedType(objectType Type, field Field) {
 
 // Generate condition between object and field when the field is a Badaas Model
 func (condition *Condition) generateForBadaasModel(objectType Type, field Field) {
-	hasFK, _ := objectType.HasFK(field)
-	if hasFK {
-		// belongsTo relation
+	_, err := objectType.GetFK(field)
+	if err == nil {
+		// has the fk -> belongsTo relation
 		condition.generateJoinWithFK(
 			objectType,
 			field,
 		)
 	} else {
-		// hasOne relation
+		// has not the fk -> hasOne relation
 		condition.generateJoinWithoutFK(
 			objectType,
 			field,

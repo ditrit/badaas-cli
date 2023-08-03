@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"go/types"
 	"os"
+	"path/filepath"
 
 	"github.com/ettle/strcase"
 	"github.com/spf13/cobra"
@@ -54,20 +55,28 @@ func generateConditions(_ *cobra.Command, args []string) {
 	}
 
 	// Generate conditions for each package
-	for _, pkg := range pkgs {
-		generateConditionsForPkg(destPkg, pkg)
+	for i, pkg := range pkgs {
+		generateConditionsForPkg(destPkg, args[i], pkg)
 	}
 }
 
 // Generates a file with conditions for each Badaas model in the package
-func generateConditionsForPkg(destPkg string, pkg *packages.Package) {
+func generateConditionsForPkg(destPkg string, pkgPath string, pkg *packages.Package) {
 	log.Logger.Infof("Generating conditions for types in package %q", pkg.Types.Name())
+
+	relationGettersFile := NewFile(pkg.Types.Name(), filepath.Join(pkgPath, "badaas-orm.go"))
 
 	for _, name := range pkg.Types.Scope().Names() {
 		object := getObject(pkg, name)
 		if object != nil {
 			generateConditionsForObject(destPkg, object)
+			_ = NewRelationGettersGenerator(object).Into(relationGettersFile)
 		}
+	}
+
+	err := relationGettersFile.Save()
+	if err != nil {
+		panic(err)
 	}
 }
 

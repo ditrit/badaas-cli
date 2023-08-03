@@ -3,7 +3,15 @@ package conditions
 import (
 	"errors"
 	"go/types"
+
+	"github.com/elliotchance/pie/v2"
 )
+
+// badaas/orm/baseModels.go
+var modelIDs = []string{
+	badaasORMPath + "." + uIntID,
+	badaasORMPath + "." + uuid,
+}
 
 type Field struct {
 	Name         string
@@ -12,6 +20,10 @@ type Field struct {
 	Embedded     bool
 	Tags         GormTags
 	ColumnPrefix string
+}
+
+func (field Field) IsModelID() bool {
+	return pie.Contains(modelIDs, field.TypeString())
 }
 
 // Get the name of the column where the data for a field will be saved

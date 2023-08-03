@@ -7,8 +7,8 @@ import (
 	"time"
 )
 
-func GoEmbeddedId(operator orm.Operator[uint]) orm.WhereCondition[goembedded.GoEmbedded] {
-	return orm.FieldCondition[goembedded.GoEmbedded, uint]{
+func GoEmbeddedId(operator orm.Operator[orm.UIntID]) orm.WhereCondition[goembedded.GoEmbedded] {
+	return orm.FieldCondition[goembedded.GoEmbedded, orm.UIntID]{
 		FieldIdentifier: orm.IDFieldID,
 		Operator:        operator,
 	}
