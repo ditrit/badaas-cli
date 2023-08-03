@@ -40,6 +40,7 @@ func PhoneBrand(conditions ...orm.Condition[overridereferences.Brand]) orm.Condi
 	}
 }
 
+var PhonePreloadBrand = PhoneBrand(BrandPreloadAttributes)
 var phoneBrandNameFieldID = orm.FieldIdentifier{Field: "BrandName"}
 
 func PhoneBrandName(operator orm.Operator[string]) orm.WhereCondition[overridereferences.Phone] {
@@ -50,3 +51,4 @@ func PhoneBrandName(operator orm.Operator[string]) orm.WhereCondition[overridere
 }
 
 var PhonePreloadAttributes = orm.NewPreloadCondition[overridereferences.Phone](phoneBrandNameFieldID)
+var PhonePreloadRelations = []orm.Condition[overridereferences.Phone]{PhonePreloadBrand}

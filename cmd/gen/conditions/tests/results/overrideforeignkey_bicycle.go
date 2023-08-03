@@ -40,6 +40,7 @@ func BicycleOwner(conditions ...orm.Condition[overrideforeignkey.Person]) orm.Co
 	}
 }
 
+var BicyclePreloadOwner = BicycleOwner(PersonPreloadAttributes)
 var bicycleOwnerSomethingIdFieldID = orm.FieldIdentifier{Field: "OwnerSomethingID"}
 
 func BicycleOwnerSomethingId(operator orm.Operator[string]) orm.WhereCondition[overrideforeignkey.Bicycle] {
@@ -50,3 +51,4 @@ func BicycleOwnerSomethingId(operator orm.Operator[string]) orm.WhereCondition[o
 }
 
 var BicyclePreloadAttributes = orm.NewPreloadCondition[overrideforeignkey.Bicycle](bicycleOwnerSomethingIdFieldID)
+var BicyclePreloadRelations = []orm.Condition[overrideforeignkey.Bicycle]{BicyclePreloadOwner}

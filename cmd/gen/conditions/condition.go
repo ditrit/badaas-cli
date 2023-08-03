@@ -39,6 +39,7 @@ type Condition struct {
 	param           *JenParam
 	destPkg         string
 	fieldIdentifier string
+	preloadName     string
 }
 
 func NewCondition(destPkg string, objectType Type, field Field) *Condition {
@@ -308,6 +309,22 @@ func (condition *Condition) generateJoin(objectType Type, field Field, t1Field, 
 			),
 		),
 	)
+
+	// preload for the relation
+	preloadName := getPreloadRelationName(objectType, field)
+	condition.codes = append(
+		condition.codes,
+		jen.Var().Id(
+			preloadName,
+		).Op("=").Add(jen.Id(conditionName)).Call(
+			jen.Id(getPreloadAttributesName(field.TypeName())),
+		),
+	)
+	condition.preloadName = preloadName
+}
+
+func getPreloadRelationName(objectType Type, field Field) string {
+	return objectType.Name() + "Preload" + field.Name
 }
 
 // Generate condition names

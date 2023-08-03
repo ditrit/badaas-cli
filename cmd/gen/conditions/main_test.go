@@ -105,6 +105,9 @@ func TestMultiplePackage(t *testing.T) {
 	doTest(t, "./tests/multiplepackage/package1", []Comparison{
 		{Have: "package1_conditions.go", Expected: "./tests/results/multiplepackage_package1.go"},
 	})
+	doTest(t, "./tests/multiplepackage/package2", []Comparison{
+		{Have: "package2_conditions.go", Expected: "./tests/results/multiplepackage_package2.go"},
+	})
 }
 
 func TestColumnDefinition(t *testing.T) {
@@ -115,16 +118,16 @@ func TestColumnDefinition(t *testing.T) {
 
 func TestOverrideForeignKey(t *testing.T) {
 	doTest(t, "./tests/overrideforeignkey", []Comparison{
-		{Have: "bicycle_conditions.go", Expected: "./tests/results/overrideforeignkey.go"},
+		{Have: "bicycle_conditions.go", Expected: "./tests/results/overrideforeignkey_bicycle.go"},
+		{Have: "person_conditions.go", Expected: "./tests/results/overrideforeignkey_person.go"},
 	})
-	utils.RemoveFile("person_conditions.go")
 }
 
 func TestOverrideReferences(t *testing.T) {
 	doTest(t, "./tests/overridereferences", []Comparison{
-		{Have: "phone_conditions.go", Expected: "./tests/results/overridereferences.go"},
+		{Have: "phone_conditions.go", Expected: "./tests/results/overridereferences_phone.go"},
+		{Have: "brand_conditions.go", Expected: "./tests/results/overridereferences_brand.go"},
 	})
-	utils.RemoveFile("brand_conditions.go")
 }
 
 func TestOverrideForeignKeyInverse(t *testing.T) {

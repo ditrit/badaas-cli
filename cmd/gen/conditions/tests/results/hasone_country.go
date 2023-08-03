@@ -40,4 +40,6 @@ func CountryCapital(conditions ...orm.Condition[hasone.City]) orm.Condition[haso
 	}
 }
 
+var CountryPreloadCapital = CountryCapital(CityPreloadAttributes)
 var CountryPreloadAttributes = orm.NewPreloadCondition[hasone.Country]()
+var CountryPreloadRelations = []orm.Condition[hasone.Country]{CountryPreloadCapital}

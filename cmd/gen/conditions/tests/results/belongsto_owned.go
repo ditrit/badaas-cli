@@ -40,6 +40,7 @@ func OwnedOwner(conditions ...orm.Condition[belongsto.Owner]) orm.Condition[belo
 	}
 }
 
+var OwnedPreloadOwner = OwnedOwner(OwnerPreloadAttributes)
 var ownedOwnerIdFieldID = orm.FieldIdentifier{Field: "OwnerID"}
 
 func OwnedOwnerId(operator orm.Operator[orm.UUID]) orm.WhereCondition[belongsto.Owned] {
@@ -50,3 +51,4 @@ func OwnedOwnerId(operator orm.Operator[orm.UUID]) orm.WhereCondition[belongsto.
 }
 
 var OwnedPreloadAttributes = orm.NewPreloadCondition[belongsto.Owned](ownedOwnerIdFieldID)
+var OwnedPreloadRelations = []orm.Condition[belongsto.Owned]{OwnedPreloadOwner}

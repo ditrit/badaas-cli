@@ -40,6 +40,7 @@ func SellerCompany(conditions ...orm.Condition[hasmany.Company]) orm.Condition[h
 	}
 }
 
+var SellerPreloadCompany = SellerCompany(CompanyPreloadAttributes)
 var sellerCompanyIdFieldID = orm.FieldIdentifier{Field: "CompanyID"}
 
 func SellerCompanyId(operator orm.Operator[orm.UUID]) orm.WhereCondition[hasmany.Seller] {
@@ -50,3 +51,4 @@ func SellerCompanyId(operator orm.Operator[orm.UUID]) orm.WhereCondition[hasmany
 }
 
 var SellerPreloadAttributes = orm.NewPreloadCondition[hasmany.Seller](sellerCompanyIdFieldID)
+var SellerPreloadRelations = []orm.Condition[hasmany.Seller]{SellerPreloadCompany}

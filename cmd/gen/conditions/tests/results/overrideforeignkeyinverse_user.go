@@ -40,4 +40,6 @@ func UserCreditCard(conditions ...orm.Condition[overrideforeignkeyinverse.Credit
 	}
 }
 
+var UserPreloadCreditCard = UserCreditCard(CreditCardPreloadAttributes)
 var UserPreloadAttributes = orm.NewPreloadCondition[overrideforeignkeyinverse.User]()
+var UserPreloadRelations = []orm.Condition[overrideforeignkeyinverse.User]{UserPreloadCreditCard}

@@ -40,6 +40,7 @@ func CityCountry(conditions ...orm.Condition[hasone.Country]) orm.Condition[haso
 	}
 }
 
+var CityPreloadCountry = CityCountry(CountryPreloadAttributes)
 var cityCountryIdFieldID = orm.FieldIdentifier{Field: "CountryID"}
 
 func CityCountryId(operator orm.Operator[orm.UUID]) orm.WhereCondition[hasone.City] {
@@ -50,3 +51,4 @@ func CityCountryId(operator orm.Operator[orm.UUID]) orm.WhereCondition[hasone.Ci
 }
 
 var CityPreloadAttributes = orm.NewPreloadCondition[hasone.City](cityCountryIdFieldID)
+var CityPreloadRelations = []orm.Condition[hasone.City]{CityPreloadCountry}

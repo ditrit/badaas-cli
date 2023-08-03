@@ -40,6 +40,7 @@ func EmployeeBoss(conditions ...orm.Condition[selfreferential.Employee]) orm.Con
 	}
 }
 
+var EmployeePreloadBoss = EmployeeBoss(EmployeePreloadAttributes)
 var employeeBossIdFieldID = orm.FieldIdentifier{Field: "BossID"}
 
 func EmployeeBossId(operator orm.Operator[orm.UUID]) orm.WhereCondition[selfreferential.Employee] {
@@ -50,3 +51,4 @@ func EmployeeBossId(operator orm.Operator[orm.UUID]) orm.WhereCondition[selfrefe
 }
 
 var EmployeePreloadAttributes = orm.NewPreloadCondition[selfreferential.Employee](employeeBossIdFieldID)
+var EmployeePreloadRelations = []orm.Condition[selfreferential.Employee]{EmployeePreloadBoss}

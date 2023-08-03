@@ -49,6 +49,15 @@ func (cg ConditionsGenerator) Into(file *File) error {
 	)
 	fieldIdentifiers := []jen.Code{}
 
+	preloadRelationsCondition := jen.Var().Id(
+		objectName + "PreloadRelations",
+	).Op("=").Index().Add(jen.Qual(
+		badaasORMPath, badaasORMCondition,
+	)).Types(
+		objectQual,
+	)
+	relationPreloads := []jen.Code{}
+
 	for _, condition := range conditions {
 		file.Add(condition.codes...)
 
@@ -59,9 +68,21 @@ func (cg ConditionsGenerator) Into(file *File) error {
 				jen.Qual("", condition.fieldIdentifier),
 			)
 		}
+
+		// add the preload to the list of all possible preloads
+		if condition.preloadName != "" {
+			relationPreloads = append(
+				relationPreloads,
+				jen.Qual("", condition.preloadName),
+			)
+		}
 	}
 
 	file.Add(preloadAttributesCondition.Call(fieldIdentifiers...))
+
+	if len(relationPreloads) > 0 {
+		file.Add(preloadRelationsCondition.Values(relationPreloads...))
+	}
 
 	return nil
 }

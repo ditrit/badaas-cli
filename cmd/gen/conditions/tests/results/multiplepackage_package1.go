@@ -41,4 +41,6 @@ func Package1Package2(conditions ...orm.Condition[package2.Package2]) orm.Condit
 	}
 }
 
+var Package1PreloadPackage2 = Package1Package2(Package2PreloadAttributes)
 var Package1PreloadAttributes = orm.NewPreloadCondition[package1.Package1]()
+var Package1PreloadRelations = []orm.Condition[package1.Package1]{Package1PreloadPackage2}

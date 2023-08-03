@@ -49,4 +49,6 @@ func ComputerProcessor(conditions ...orm.Condition[overridereferencesinverse.Pro
 	}
 }
 
+var ComputerPreloadProcessor = ComputerProcessor(ProcessorPreloadAttributes)
 var ComputerPreloadAttributes = orm.NewPreloadCondition[overridereferencesinverse.Computer](computerNameFieldID)
+var ComputerPreloadRelations = []orm.Condition[overridereferencesinverse.Computer]{ComputerPreloadProcessor}
