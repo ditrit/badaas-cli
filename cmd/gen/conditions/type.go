@@ -11,7 +11,10 @@ import (
 
 var (
 	// badaas/orm/baseModels.go
-	badaasORMBaseModels = []string{"github.com/ditrit/badaas/orm.UUIDModel", "github.com/ditrit/badaas/orm.UIntModel", "gorm.io/gorm.Model"}
+	badaasORMBaseModels = []string{
+		badaasORMPath + "." + uuidModel,
+		badaasORMPath + "." + uIntModel,
+	}
 
 	// database/sql
 	nullString       = "database/sql.NullString"
@@ -69,7 +72,7 @@ func isBadaasModel(structType *types.Struct) bool {
 	for i := 0; i < structType.NumFields(); i++ {
 		field := structType.Field(i)
 
-		if field.Embedded() && pie.Contains(badaasORMBaseModels, field.Type().String()) {
+		if field.Embedded() && isBaseModel(field.Type().String()) {
 			return true
 		}
 	}
@@ -77,10 +80,14 @@ func isBadaasModel(structType *types.Struct) bool {
 	return false
 }
 
+func isBaseModel(fieldName string) bool {
+	return pie.Contains(badaasORMBaseModels, fieldName)
+}
+
 // Returns true is the type has a foreign key to the field's object
 // (another field that references that object)
 func (t Type) HasFK(field Field) (bool, error) {
-	objectFields, err := getFields(t, "")
+	objectFields, err := getFields(t)
 	if err != nil {
 		return false, err
 	}

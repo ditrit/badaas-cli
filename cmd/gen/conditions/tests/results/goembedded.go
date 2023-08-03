@@ -31,9 +31,15 @@ func GoEmbeddedDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[go
 		Operator: operator,
 	}
 }
-func GoEmbeddedEmbeddedInt(operator orm.Operator[int]) orm.WhereCondition[goembedded.GoEmbedded] {
+func GoEmbeddedInt(operator orm.Operator[int]) orm.WhereCondition[goembedded.GoEmbedded] {
 	return orm.FieldCondition[goembedded.GoEmbedded, int]{
-		Field:    "EmbeddedInt",
+		Field:    "Int",
+		Operator: operator,
+	}
+}
+func GoEmbeddedToBeEmbeddedInt(operator orm.Operator[int]) orm.WhereCondition[goembedded.GoEmbedded] {
+	return orm.FieldCondition[goembedded.GoEmbedded, int]{
+		Field:    "Int",
 		Operator: operator,
 	}
 }

@@ -31,10 +31,22 @@ func GormEmbeddedDeletedAt(operator orm.Operator[time.Time]) orm.WhereCondition[
 		Operator: operator,
 	}
 }
+func GormEmbeddedInt(operator orm.Operator[int]) orm.WhereCondition[gormembedded.GormEmbedded] {
+	return orm.FieldCondition[gormembedded.GormEmbedded, int]{
+		Field:    "Int",
+		Operator: operator,
+	}
+}
 func GormEmbeddedGormEmbeddedInt(operator orm.Operator[int]) orm.WhereCondition[gormembedded.GormEmbedded] {
 	return orm.FieldCondition[gormembedded.GormEmbedded, int]{
 		ColumnPrefix: "gorm_embedded_",
 		Field:        "Int",
 		Operator:     operator,
+	}
+}
+func GormEmbeddedGormEmbeddedNoPrefixInt(operator orm.Operator[int]) orm.WhereCondition[gormembedded.GormEmbedded] {
+	return orm.FieldCondition[gormembedded.GormEmbedded, int]{
+		Field:    "Int",
+		Operator: operator,
 	}
 }

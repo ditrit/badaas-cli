@@ -20,7 +20,7 @@ func NewConditionsGenerator(object types.Object) *ConditionsGenerator {
 
 // Add conditions for an object in the file
 func (cg ConditionsGenerator) Into(file *File) error {
-	fields, err := getFields(cg.objectType, "")
+	fields, err := getFields(cg.objectType)
 	if err != nil {
 		return err
 	}
