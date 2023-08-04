@@ -4,6 +4,7 @@ import (
 	"go/types"
 
 	"github.com/dave/jennifer/jen"
+	"github.com/ettle/strcase"
 
 	"github.com/ditrit/badaas-cli/cmd/log"
 )
@@ -58,6 +59,18 @@ func (cg ConditionsGenerator) Into(file *File) error {
 	)
 	relationPreloads := []jen.Code{}
 
+	// object reflect type definition
+	file.Add(
+		jen.Var().Id(
+			getObjectTypeName(objectName),
+		).Op("=").Add(
+			jen.Qual(
+				"reflect",
+				"TypeOf",
+			).Call(jen.Op("*").New(objectQual)),
+		),
+	)
+
 	for _, condition := range conditions {
 		file.Add(condition.codes...)
 
@@ -85,6 +98,10 @@ func (cg ConditionsGenerator) Into(file *File) error {
 	}
 
 	return nil
+}
+
+func getObjectTypeName(objectType string) string {
+	return strcase.ToCamel(objectType) + "Type"
 }
 
 func getPreloadAttributesName(objectName string) string {
