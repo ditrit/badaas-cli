@@ -215,12 +215,7 @@ func (condition *Condition) createField(objectType Type, field Field) {
 		fieldQual,
 	)
 
-	condition.FieldDefinition = jen.Qual(
-		badaasORMPath, badaasORMField,
-	).Types(
-		objectTypeQual,
-		condition.param.GenericType(),
-	).Values(fieldValues)
+	condition.FieldDefinition = fieldQual.Clone().Values(fieldValues)
 }
 
 // Generate a JoinCondition between the object and field's object
