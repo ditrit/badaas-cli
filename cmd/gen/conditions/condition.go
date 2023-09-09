@@ -17,6 +17,8 @@ const (
 	badaasORMNewCollectionPreload = "NewCollectionPreloadCondition"
 	badaasORMNewPreloadCondition  = "NewPreloadCondition"
 	badaasORMField                = "Field"
+	badaasORMBoolField            = "BoolField"
+	badaasORMStringField          = "StringField"
 	// badaas/orm/model
 	modelPath = badaasORMPath + "/model"
 	uIntID    = "UIntID"
@@ -193,8 +195,21 @@ func (condition *Condition) createField(objectType Type, field Field) {
 		objectType.Name(),
 	)
 
-	condition.FieldType = jen.Id(condition.FieldName).Qual(
+	fieldQual := jen.Qual(
 		badaasORMPath, badaasORMField,
+	)
+	if condition.param.isString {
+		fieldQual = jen.Qual(
+			badaasORMPath, badaasORMStringField,
+		).Types(objectTypeQual)
+	} else if condition.param.isBool {
+		fieldQual = jen.Qual(
+			badaasORMPath, badaasORMBoolField,
+		).Types(objectTypeQual)
+	}
+
+	condition.FieldType = jen.Id(condition.FieldName).Add(
+		fieldQual,
 	).Types(
 		objectTypeQual,
 		condition.param.GenericType(),
