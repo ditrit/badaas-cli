@@ -202,10 +202,16 @@ func (condition *Condition) createField(objectType Type, field Field) {
 		condition.param.GenericType(),
 	)
 	if condition.param.isString {
+		fieldValues = jen.Dict{
+			jen.Id("Field"): fieldQual.Clone().Values(fieldValues),
+		}
 		fieldQual = jen.Qual(
 			badaasORMPath, badaasORMStringField,
 		).Types(objectTypeQual)
 	} else if condition.param.isBool {
+		fieldValues = jen.Dict{
+			jen.Id("Field"): fieldQual.Clone().Values(fieldValues),
+		}
 		fieldQual = jen.Qual(
 			badaasORMPath, badaasORMBoolField,
 		).Types(objectTypeQual)
