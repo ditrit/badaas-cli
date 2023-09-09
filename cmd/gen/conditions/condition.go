@@ -197,6 +197,9 @@ func (condition *Condition) createField(objectType Type, field Field) {
 
 	fieldQual := jen.Qual(
 		badaasORMPath, badaasORMField,
+	).Types(
+		objectTypeQual,
+		condition.param.GenericType(),
 	)
 	if condition.param.isString {
 		fieldQual = jen.Qual(
@@ -210,9 +213,6 @@ func (condition *Condition) createField(objectType Type, field Field) {
 
 	condition.FieldType = jen.Id(condition.FieldName).Add(
 		fieldQual,
-	).Types(
-		objectTypeQual,
-		condition.param.GenericType(),
 	)
 
 	condition.FieldDefinition = jen.Qual(
