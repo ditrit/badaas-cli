@@ -174,7 +174,7 @@ func createMethod(typeName, methodName string) *jen.Statement {
 // to use it in the where condition and in the preload condition
 func (condition *Condition) createField(objectType Type, field Field) {
 	fieldValues := jen.Dict{
-		jen.Id("Field"): jen.Lit(field.Name),
+		jen.Id("Name"): jen.Lit(field.Name),
 	}
 
 	columnName := field.getColumnName()
