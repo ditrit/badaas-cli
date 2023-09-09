@@ -11,19 +11,12 @@ import (
 
 const (
 	// badaas/orm
-	badaasORMFieldIs       = "FieldIs"
-	badaasORMBoolFieldIs   = "BoolFieldIs"
-	badaasORMStringFieldIs = "StringFieldIs"
-	// badaas/orm/condition
-	conditionPath                 = badaasORMPath + "/condition"
 	badaasORMCondition            = "Condition"
 	badaasORMJoinCondition        = "JoinCondition"
 	badaasORMNewJoinCondition     = "NewJoinCondition"
 	badaasORMNewCollectionPreload = "NewCollectionPreloadCondition"
 	badaasORMNewPreloadCondition  = "NewPreloadCondition"
-	// badaas/orm/query
-	queryPath                = badaasORMPath + "/query"
-	badaasORMFieldIdentifier = "FieldIdentifier"
+	badaasORMField                = "Field"
 	// badaas/orm/model
 	modelPath = badaasORMPath + "/model"
 	uIntID    = "UIntID"
@@ -65,7 +58,7 @@ func (condition *Condition) generate(objectType Type, field Field) {
 		// the field is a basic type (string, int, etc)
 		// adapt param to that type and generate a WhereCondition
 		condition.param.ToBasicKind(fieldType)
-		condition.generateWhere(
+		condition.createField(
 			objectType,
 			field,
 		)
@@ -135,7 +128,7 @@ func (condition *Condition) generateForNamedType(objectType Type, field Field) {
 	case field.Type.IsSQLNullableType():
 		// field is a sql nullable type (sql.NullBool, sql.NullInt, etc.)
 		condition.param.SQLToBasicType(field.Type)
-		condition.generateWhere(
+		condition.createField(
 			objectType,
 			field,
 		)
@@ -144,7 +137,7 @@ func (condition *Condition) generateForNamedType(objectType Type, field Field) {
 		// or a named type supported by gorm (time.Time)
 		// or a badaas-orm id (uuid or uintid)
 		condition.param.ToCustomType(condition.destPkg, field.Type)
-		condition.generateWhere(
+		condition.createField(
 			objectType,
 			field,
 		)
@@ -171,54 +164,6 @@ func (condition *Condition) generateForBadaasModel(objectType Type, field Field)
 	}
 }
 
-// Generate a WhereCondition between object and field
-func (condition *Condition) generateWhere(objectType Type, field Field) {
-	objectTypeQual := jen.Qual(
-		getRelativePackagePath(condition.destPkg, objectType),
-		objectType.Name(),
-	)
-
-	conditionName := getConditionName(field) + "Is"
-	log.Logger.Debugf("Generated %q", conditionName)
-
-	condition.createFieldIdentifier(
-		objectType.Name(), field,
-	)
-
-	fieldIs := jen.Qual(
-		badaasORMPath, badaasORMFieldIs,
-	).Types(
-		objectTypeQual,
-		condition.param.GenericType(),
-	)
-
-	fieldIsCreationValues := jen.Dict{
-		jen.Id("FieldID"): jen.Id(condition.modelType).Dot(field.CompleteName()),
-	}
-
-	if condition.param.isString {
-		fieldIsCreationValues = jen.Dict{
-			jen.Id("FieldIs"): fieldIs.Clone().Values(fieldIsCreationValues),
-		}
-		fieldIs = jen.Qual(
-			badaasORMPath, badaasORMStringFieldIs,
-		).Types(objectTypeQual)
-	} else if condition.param.isBool {
-		fieldIsCreationValues = jen.Dict{
-			jen.Id("FieldIs"): fieldIs.Clone().Values(fieldIsCreationValues),
-		}
-		fieldIs = jen.Qual(
-			badaasORMPath, badaasORMBoolFieldIs,
-		).Types(objectTypeQual)
-	}
-
-	condition.ConditionMethod = createMethod(condition.modelType, conditionName).Params().Add(
-		fieldIs,
-	).Block(
-		jen.Return(fieldIs.Clone().Values(fieldIsCreationValues)),
-	)
-}
-
 func createMethod(typeName, methodName string) *jen.Statement {
 	return jen.Func().Params(
 		jen.Id(typeName).Id(typeName),
@@ -227,34 +172,40 @@ func createMethod(typeName, methodName string) *jen.Statement {
 
 // create a variable containing the definition of the field identifier
 // to use it in the where condition and in the preload condition
-func (condition *Condition) createFieldIdentifier(objectName string, field Field) {
-	fieldIdentifierValues := jen.Dict{
-		jen.Id("ModelType"): jen.Id(getObjectTypeName(objectName)),
-		jen.Id("Field"):     jen.Lit(field.Name),
+func (condition *Condition) createField(objectType Type, field Field) {
+	fieldValues := jen.Dict{
+		jen.Id("Field"): jen.Lit(field.Name),
 	}
 
 	columnName := field.getColumnName()
 
 	if columnName != "" {
-		fieldIdentifierValues[jen.Id("Column")] = jen.Lit(columnName)
+		fieldValues[jen.Id("Column")] = jen.Lit(columnName)
 	}
 
 	columnPrefix := field.ColumnPrefix
 	if columnPrefix != "" {
-		fieldIdentifierValues[jen.Id("ColumnPrefix")] = jen.Lit(columnPrefix)
+		fieldValues[jen.Id("ColumnPrefix")] = jen.Lit(columnPrefix)
 	}
 
+	objectTypeQual := jen.Qual(
+		getRelativePackagePath(condition.destPkg, objectType),
+		objectType.Name(),
+	)
+
 	condition.FieldType = jen.Id(condition.FieldName).Qual(
-		queryPath, badaasORMFieldIdentifier,
+		badaasORMPath, badaasORMField,
 	).Types(
+		objectTypeQual,
 		condition.param.GenericType(),
 	)
 
 	condition.FieldDefinition = jen.Qual(
-		queryPath, badaasORMFieldIdentifier,
+		badaasORMPath, badaasORMField,
 	).Types(
+		objectTypeQual,
 		condition.param.GenericType(),
-	).Values(fieldIdentifierValues)
+	).Values(fieldValues)
 }
 
 // Generate a JoinCondition between the object and field's object
@@ -296,13 +247,13 @@ func (condition *Condition) generateJoin(objectType Type, field Field, t1Field, 
 	log.Logger.Debugf("Generated %q", conditionName)
 
 	ormT1IJoinCondition := jen.Qual(
-		conditionPath, badaasORMJoinCondition,
+		badaasORMPath, badaasORMJoinCondition,
 	).Types(t1)
 	ormT2Condition := jen.Qual(
-		conditionPath, badaasORMCondition,
+		badaasORMPath, badaasORMCondition,
 	).Types(t2)
 	ormJoinCondition := jen.Qual(
-		conditionPath, badaasORMNewJoinCondition,
+		badaasORMPath, badaasORMNewJoinCondition,
 	).Types(
 		t1, t2,
 	)
@@ -351,13 +302,13 @@ func (condition *Condition) generateCollectionPreload(objectType Type, field Fie
 	)
 
 	ormT1Condition := jen.Qual(
-		conditionPath, badaasORMCondition,
+		badaasORMPath, badaasORMCondition,
 	).Types(t1)
 	ormT2IJoinCondition := jen.Qual(
-		conditionPath, badaasORMJoinCondition,
+		badaasORMPath, badaasORMJoinCondition,
 	).Types(t2)
 	ormNewCollectionPreload := jen.Qual(
-		conditionPath, badaasORMNewCollectionPreload,
+		badaasORMPath, badaasORMNewCollectionPreload,
 	).Types(
 		t1, t2,
 	)
