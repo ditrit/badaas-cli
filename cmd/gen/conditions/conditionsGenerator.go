@@ -84,7 +84,7 @@ func (cg ConditionsGenerator) Into(file *File) error {
 func addPreloadRelationsMethod(file *File, objectName string, objectQual *jen.Statement, conditionsModelType string, relationPreloads []jen.Code) {
 	if len(relationPreloads) > 0 {
 		condition := jen.Index().Add(jen.Qual(
-			badaasORMPath, badaasORMCondition,
+			cqlPath, badaasORMCondition,
 		)).Types(
 			objectQual,
 		)
@@ -105,14 +105,14 @@ func addPreloadMethod(file *File, objectName string, objectQual *jen.Statement, 
 		jen.Comment(fmt.Sprintf("Preload allows preloading the %s when doing a query", objectName)),
 		createMethod(conditionsModelType, preloadMethod).Params().Add(
 			jen.Qual(
-				badaasORMPath, badaasORMCondition,
+				cqlPath, badaasORMCondition,
 			).Types(
 				objectQual,
 			),
 		).Block(
 			jen.Return(
 				jen.Qual(
-					badaasORMPath, badaasORMNewPreloadCondition,
+					cqlPath, badaasORMNewPreloadCondition,
 				).Types(
 					objectQual,
 				).Call(fieldIdentifiers...),

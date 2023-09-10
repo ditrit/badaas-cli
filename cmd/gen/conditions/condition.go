@@ -10,7 +10,8 @@ import (
 )
 
 const (
-	// badaas/orm
+	// badaas/orm/cql
+	cqlPath                       = badaasORMPath + "/cql"
 	badaasORMCondition            = "Condition"
 	badaasORMJoinCondition        = "JoinCondition"
 	badaasORMNewJoinCondition     = "NewJoinCondition"
@@ -196,7 +197,7 @@ func (condition *Condition) createField(objectType Type, field Field) {
 	)
 
 	fieldQual := jen.Qual(
-		badaasORMPath, badaasORMField,
+		cqlPath, badaasORMField,
 	).Types(
 		objectTypeQual,
 		condition.param.GenericType(),
@@ -206,14 +207,14 @@ func (condition *Condition) createField(objectType Type, field Field) {
 			jen.Id("Field"): fieldQual.Clone().Values(fieldValues),
 		}
 		fieldQual = jen.Qual(
-			badaasORMPath, badaasORMStringField,
+			cqlPath, badaasORMStringField,
 		).Types(objectTypeQual)
 	} else if condition.param.isBool {
 		fieldValues = jen.Dict{
 			jen.Id("Field"): fieldQual.Clone().Values(fieldValues),
 		}
 		fieldQual = jen.Qual(
-			badaasORMPath, badaasORMBoolField,
+			cqlPath, badaasORMBoolField,
 		).Types(objectTypeQual)
 	}
 
@@ -263,13 +264,13 @@ func (condition *Condition) generateJoin(objectType Type, field Field, t1Field, 
 	log.Logger.Debugf("Generated %q", conditionName)
 
 	ormT1IJoinCondition := jen.Qual(
-		badaasORMPath, badaasORMJoinCondition,
+		cqlPath, badaasORMJoinCondition,
 	).Types(t1)
 	ormT2Condition := jen.Qual(
-		badaasORMPath, badaasORMCondition,
+		cqlPath, badaasORMCondition,
 	).Types(t2)
 	ormJoinCondition := jen.Qual(
-		badaasORMPath, badaasORMNewJoinCondition,
+		cqlPath, badaasORMNewJoinCondition,
 	).Types(
 		t1, t2,
 	)
@@ -318,13 +319,13 @@ func (condition *Condition) generateCollectionPreload(objectType Type, field Fie
 	)
 
 	ormT1Condition := jen.Qual(
-		badaasORMPath, badaasORMCondition,
+		cqlPath, badaasORMCondition,
 	).Types(t1)
 	ormT2IJoinCondition := jen.Qual(
-		badaasORMPath, badaasORMJoinCondition,
+		cqlPath, badaasORMJoinCondition,
 	).Types(t2)
 	ormNewCollectionPreload := jen.Qual(
-		badaasORMPath, badaasORMNewCollectionPreload,
+		cqlPath, badaasORMNewCollectionPreload,
 	).Types(
 		t1, t2,
 	)
